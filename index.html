@@ -46,6 +46,9 @@
 :root {
   --rule: #C7D8DA;          /* shoal tint: hairlines and fills, never text */
   --field: #FFFFFF;
+  /* input/chip border, WCAG 1.4.11 >= 3:1 against --field:
+     light #768E9C on #FFFFFF = 3.43:1 (3.13:1 on page bg); dark #7B91A0 on #0C1C2F = 5.23:1 */
+  --field-line: color-mix(in srgb, var(--ol-muted) 75%, var(--ol-bg));
   --t-sm: 0.8rem; --t-base: 1rem; --t-md: 1.25rem; --t-lg: 1.563rem;
   --t-xl: 1.953rem; --t-2xl: 2.441rem; --t-3xl: 3.815rem;
   --s-1: 0.5rem; --s-2: 1rem; --s-3: 1.5rem; --s-4: 2.5rem; --s-5: 4rem; --s-6: 6.5rem;
@@ -183,7 +186,7 @@ fieldset.svc-fields { padding-top: var(--s-4); border-top: 1px solid var(--rule)
 input[type="text"], input[type="email"], input[type="number"], select, textarea {
   width: 100%; min-height: 48px; padding: 12px 14px;
   font: 400 var(--t-base)/1.4 var(--ol-font-body); color: var(--ol-fg);
-  background: var(--field); border: 1px solid color-mix(in srgb, var(--ol-muted) 55%, var(--ol-bg)); border-radius: 2px;
+  background: var(--field); border: 1px solid var(--field-line); border-radius: 2px;
   transition: border-color .15s var(--ease-out), box-shadow .15s var(--ease-out);
 }
 input::placeholder, textarea::placeholder { color: var(--ol-muted); opacity: 1; }
@@ -204,7 +207,7 @@ select {
 .choice { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
 .choice label {
   position: relative; display: grid; gap: 4px; padding: 16px 18px; min-height: 48px; cursor: pointer;
-  border: 1px solid color-mix(in srgb, var(--ol-muted) 55%, var(--ol-bg)); border-radius: 2px; background: var(--field);
+  border: 1px solid var(--field-line); border-radius: 2px; background: var(--field);
   transition: background-color .2s var(--ease-out), color .2s var(--ease-out), border-color .2s var(--ease-out);
 }
 .choice label b { font-family: var(--ol-font-display); font-weight: 400; font-size: var(--t-md); line-height: 1.2; }
@@ -219,7 +222,7 @@ select {
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 .chips label {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; cursor: pointer;
-  border: 1px solid color-mix(in srgb, var(--ol-muted) 55%, var(--ol-bg)); border-radius: 999px; background: var(--field);
+  border: 1px solid var(--field-line); border-radius: 999px; background: var(--field);
   font-size: var(--t-base); transition: background-color .2s var(--ease-out), color .2s var(--ease-out);
 }
 .chips label:hover { border-color: var(--ol-fg); }
@@ -300,7 +303,7 @@ footer .meta a { color: var(--ol-fg); }
       <a class="navlink" href="#services">Services</a>
       <a class="navlink" href="#process">Process</a>
       <a class="navlink" href="#about">About</a>
-      <a class="navcta" href="#brief">Start a brief</a>
+      <a class="navcta" href="#brief-section">Start a brief</a>
     </nav>
   </div>
 
@@ -308,7 +311,7 @@ footer .meta a { color: var(--ol-fg); }
     <h1>Video, brand and web — <em>run by one person who answers for all of it.</em></h1>
     <p class="sub"><span translate="no">Oberlune</span> plans, produces and delivers creative work for brands across the Gulf and beyond. You deal with me from brief to final file.</p>
     <div class="actions">
-      <a class="btn" href="#brief">Start a brief</a>
+      <a class="btn" href="#brief-section">Start a brief</a>
       <span class="note">Quote within 24 hours</span>
     </div>
   </div>
@@ -329,18 +332,18 @@ footer .meta a { color: var(--ol-fg); }
             <li><b>Short-form</b><span>Series for Reels, TikTok and Shorts, planned as a set rather than one-offs.</span></li>
             <li><b>Product</b><span>Your product footage or photos, cut or animated so the detail does the selling.</span></li>
           </ul>
-          <a class="tlink" href="#brief" data-pick="Video">Start a video brief</a>
+          <a class="tlink" href="#brief-section" data-pick="Video">Start a video brief</a>
         </article>
         <div class="svc-side">
           <article>
             <h3>Brand identity</h3>
             <p>A logo, colours and type, guidelines and social templates: one system that holds together wherever your name appears.</p>
-            <a class="tlink" href="#brief" data-pick="Brand identity">Start a brand brief</a>
+            <a class="tlink" href="#brief-section" data-pick="Brand identity">Start a brand brief</a>
           </article>
           <article>
             <h3>Websites</h3>
             <p>Clear, fast sites with the features you actually need: booking, a store, a blog, more than one language.</p>
-            <a class="tlink" href="#brief" data-pick="Website">Start a website brief</a>
+            <a class="tlink" href="#brief-section" data-pick="Website">Start a website brief</a>
           </article>
         </div>
       </div>
@@ -571,7 +574,7 @@ footer .meta a { color: var(--ol-fg); }
     </a>
     <div class="meta">
       <span>© 2026 <span translate="no">Oberlune</span></span>
-      <a class="tlink" href="#brief">Start a brief</a>
+      <a class="tlink" href="#brief-section">Start a brief</a>
     </div>
   </div>
 </footer>
@@ -615,8 +618,16 @@ footer .meta a { color: var(--ol-fg); }
     let ok = false;
     try {
       // A stalled request aborts after 15s and falls through to the error message.
+      let signal;
+      if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+        signal = AbortSignal.timeout(15000);
+      } else {
+        const c = new AbortController();
+        setTimeout(() => c.abort(), 15000);
+        signal = c.signal;
+      }
       const res = await fetch(e.target.action, {
-        method: 'POST', body, headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
+        method: 'POST', body, headers: { Accept: 'application/json' }, signal });
       ok = !!(res.ok && (await res.json()).success);
     } catch { ok = false; }
     status.className = ok ? 'ok' : 'err';
