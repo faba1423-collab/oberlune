@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Oberlune · Video, brand and web</title>
-<meta name="description" content="Oberlune plans, produces and delivers video, brand identity and websites for brands across the Gulf and beyond. One person answers for all of it. Quote within 24 hours.">
+<meta name="description" data-i18n-attr="content:meta.desc" content="Oberlune plans, produces and delivers video, brand identity and websites for brands across the Gulf and beyond. One person answers for all of it. Quote within 24 hours.">
 <meta property="og:title" content="Oberlune · Video, brand and web">
 <meta property="og:description" content="Video, brand and web, run by one person who answers for all of it. Quote within 24 hours.">
 <meta property="og:type" content="website">
@@ -13,7 +13,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&family=Amiri:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
 <style>
 /* ---- brand/tokens.css (Lunar Sight), inlined verbatim minus the font @import ---- */
 :root {
@@ -61,6 +61,17 @@
 }
 :root[data-theme="dark"] { --rule: #2B4762; --field: #0C1C2F; }
 
+/* ---- Arabic: Spectral and Hanken Grotesk have no Arabic glyphs ---- */
+[lang="ar"] {
+  --ol-font-display: "Amiri", Georgia, "Times New Roman", serif;
+  --ol-font-body: "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+}
+[lang="en"]:not(:root) {
+  --ol-font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --ol-font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+body [lang] { font-family: var(--ol-font-body); } /* language islands, e.g. the toggle label */
+
 /* ---- base ---- */
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
@@ -78,8 +89,9 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--ol-accent); outline-offset: 3px; }
 ::selection { background: var(--ol-fg); color: var(--ol-bg); }
 .wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right)); }
+[dir="rtl"] .wrap { padding-inline: max(var(--gutter), env(safe-area-inset-right)) max(var(--gutter), env(safe-area-inset-left)); }
 .skip {
-  position: absolute; left: var(--gutter); top: -100px; z-index: 10;
+  position: absolute; inset-inline-start: var(--gutter); top: -100px; z-index: 10;
   background: var(--ol-fg); color: var(--ol-bg); padding: 10px 16px; text-decoration: none; font-weight: 500;
 }
 .skip:focus { top: 12px; }
@@ -119,12 +131,21 @@ p { text-wrap: pretty; }
 .hero .deco line { vector-effect: non-scaling-stroke; }
 .hero .deco .hair { stroke: var(--rule); stroke-width: 1; }
 .hero .deco .sight { stroke: var(--ol-accent); stroke-width: 1.5; }
-.horizon { position: absolute; left: 0; right: 0; bottom: 72px; height: 2px; background: var(--ol-fg); }
+[dir="rtl"] .hero .deco { transform: scaleX(-1); } /* art leans away from the headline in both directions */
+.horizon { position: absolute; inset-inline: 0; bottom: 72px; height: 2px; background: var(--ol-fg); }
 .masthead { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); padding-block: 26px; }
 .masthead nav { display: flex; align-items: center; gap: 30px; font-size: var(--t-sm); font-weight: 500; }
 .masthead nav a { text-decoration: none; }
 .masthead nav a:hover { color: var(--ol-accent); }
 .masthead nav .navcta { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
+.langbtn {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; margin-inline-start: -6px;
+  border: 1px solid var(--field-line); border-radius: 999px; background: transparent; color: inherit;
+  font: 500 var(--t-sm)/1 var(--ol-font-body); cursor: pointer; touch-action: manipulation;
+  transition: border-color .2s var(--ease-out);
+}
+.langbtn:hover { border-color: var(--ol-fg); }
+.langbtn [lang="ar"] { font-size: 0.875rem; }
 .hero-copy { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; padding-block: var(--s-5) calc(72px + var(--s-6)); }
 .hero h1 { font-size: clamp(var(--t-2xl), 5.4vw, 4.768rem); line-height: 1.04; letter-spacing: -0.015em; max-width: 12.5em; }
 .hero h1 em { font-style: italic; font-weight: 300; }
@@ -161,11 +182,12 @@ section.band + section.band { border-top: 1px solid var(--rule); }
 
 /* process: five fixes along one horizon */
 .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-3); position: relative; }
-.steps::before { content: ""; position: absolute; left: 0; right: 0; top: 11px; height: 2px; background: var(--ol-fg); }
+.steps::before { content: ""; position: absolute; inset-inline: 0; top: 11px; height: 2px; background: var(--ol-fg); }
 .steps li { position: relative; padding-top: var(--s-4); }
-.steps li::before { content: ""; position: absolute; top: 4px; left: 0; width: 2px; height: 16px; background: var(--ol-fg); }
+.steps li::before { content: ""; position: absolute; top: 4px; inset-inline-start: 0; width: 2px; height: 16px; background: var(--ol-fg); }
 .steps li.key::before { background: var(--ol-accent); width: 2px; height: 30px; top: -10px; }
-.steps .n { display: block; font-family: var(--ol-font-display); font-style: italic; font-weight: 300; font-size: var(--t-xl); line-height: 1; color: var(--ol-muted); font-variant-numeric: lining-nums; }
+/* step numbers are Western digits in both languages, so they keep the Latin display face */
+.steps .n { display: block; font-family: "Spectral", Georgia, "Times New Roman", serif; font-style: italic; font-weight: 300; font-size: var(--t-xl); line-height: 1; color: var(--ol-muted); font-variant-numeric: lining-nums; }
 .steps h3 { margin-top: var(--s-2); font-size: var(--t-md); line-height: 1.3; font-weight: 400; }
 .steps p { margin-top: var(--s-1); color: var(--ol-muted); font-size: var(--t-sm); line-height: 1.55; }
 
@@ -175,13 +197,13 @@ section.band + section.band { border-top: 1px solid var(--rule); }
 .brief .head .req-note { font-size: var(--t-sm); }
 form#brief { display: grid; gap: var(--s-4); }
 fieldset { border: 0; padding: 0; min-width: 0; display: grid; gap: var(--s-3); }
-legend { float: left; width: 100%; padding: 0; font-family: var(--ol-font-display); font-size: var(--t-lg); line-height: 1.2; font-weight: 300; }
+legend { float: inline-start; width: 100%; padding: 0; font-family: var(--ol-font-display); font-size: var(--t-lg); line-height: 1.2; font-weight: 300; }
 fieldset.svc-fields { padding-top: var(--s-4); border-top: 1px solid var(--rule); }
 .row2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
 .field { display: grid; gap: 8px; align-content: start; }
 .field > label, .group-label { font-size: var(--t-sm); font-weight: 600; }
-.req { color: var(--ol-accent); margin-left: 2px; }
+.req { color: var(--ol-accent); margin-inline-start: 2px; }
 .hint { font-size: var(--t-sm); color: var(--ol-muted); font-weight: 400; }
 input[type="text"], input[type="email"], input[type="number"], select, textarea {
   width: 100%; min-height: 48px; padding: 12px 14px;
@@ -196,11 +218,14 @@ input:user-invalid, textarea:user-invalid { border-color: var(--ol-accent); }
 textarea { min-height: 140px; resize: vertical; }
 select option { background-color: var(--field); color: var(--ol-fg); }
 select {
-  appearance: none; -webkit-appearance: none; padding-right: 42px; cursor: pointer;
+  appearance: none; -webkit-appearance: none; padding-inline-end: 42px; cursor: pointer;
   background-image: linear-gradient(45deg, transparent 50%, var(--ol-fg) 50%), linear-gradient(135deg, var(--ol-fg) 50%, transparent 50%);
   background-position: calc(100% - 22px) 52%, calc(100% - 16px) 52%;
   background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
 }
+[dir="rtl"] select { background-position: 10px 52%, 16px 52%; }
+/* links and emails read left-to-right; in Arabic they still sit on the start (right) edge */
+[dir="rtl"] input[dir="ltr"], [dir="rtl"] textarea[dir="ltr"] { text-align: right; }
 .refs { display: grid; gap: 10px; }
 
 /* service choice: three wide targets */
@@ -253,17 +278,18 @@ footer .meta a { color: var(--ol-fg); }
 @media (max-width: 960px) {
   .svc, .brief, .about { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
   .brief .head { position: static; }
-  .steps { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 28px; }
-  .steps::before { left: 0; right: auto; top: 6px; bottom: 6px; width: 2px; height: auto; }
+  .steps { grid-template-columns: minmax(0, 1fr); gap: 0; padding-inline-start: 28px; }
+  .steps::before { inset-inline: 0 auto; top: 6px; bottom: 6px; width: 2px; height: auto; }
   .steps li { padding: 0 0 var(--s-3); }
-  .steps li::before { top: 9px; left: -28px; width: 16px; height: 2px; }
-  .steps li.key::before { top: 9px; left: -28px; width: 26px; height: 2px; }
-  .steps .n { display: inline; font-size: var(--t-md); margin-right: 10px; }
+  .steps li::before { top: 9px; inset-inline-start: -28px; width: 16px; height: 2px; }
+  .steps li.key::before { top: 9px; inset-inline-start: -28px; width: 26px; height: 2px; }
+  .steps .n { display: inline; font-size: var(--t-md); margin-inline-end: 10px; }
   .steps h3 { display: inline; margin: 0; }
 }
 @media (max-width: 720px) {
   section.band { padding-block: var(--s-5); }
   .head { margin-bottom: var(--s-4); }
+  .masthead nav { gap: 18px; }
   .masthead nav .navlink { display: none; }
   .lock { font-size: var(--t-md); }
   .hero { min-height: auto; }
@@ -272,10 +298,40 @@ footer .meta a { color: var(--ol-fg); }
   .row2, .row3, .choice { grid-template-columns: minmax(0, 1fr); }
   .formats li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
 }
+
+/* ---- Arabic typesetting ----
+   Arabic has no true italic and tracking breaks its joins, so emphasis becomes colour,
+   letter-spacing is reset, and line-heights open up for Amiri's tall ascenders and descenders. */
+:root[lang="ar"] :is(h1, h2, h3, legend, .formats b, .choice b) { letter-spacing: 0; }
+:root[lang="ar"] em, :root[lang="ar"] .formats b { font-style: normal; }
+:root[lang="ar"] :is(.hero h1, .about h2) em { color: var(--ol-accent); font-weight: 400; }
+:root[lang="ar"] body { line-height: 1.75; }
+:root[lang="ar"] .hero h1 { line-height: 1.35; font-size: clamp(var(--t-2xl), 5vw, 4.4rem); }
+:root[lang="ar"] h2 { line-height: 1.4; }
+:root[lang="ar"] :is(.svc-lead h3, .about h2) { line-height: 1.3; }
+:root[lang="ar"] h3, :root[lang="ar"] legend, :root[lang="ar"] .choice label b { line-height: 1.5; }
+:root[lang="ar"] .formats b { line-height: 1.6; }
+:root[lang="ar"] :is(.hero .sub, .head p, .svc-lead > p, .about .body) { line-height: 1.8; }
+:root[lang="ar"] .steps p { line-height: 1.75; }
+:root[lang="ar"] .masthead nav { font-size: 0.875rem; }
 </style>
+<script>
+// Pick the language before first paint: a remembered choice, else the browser's languages.
+// Strings are swapped by the script at the end of <body>. Without JS the page stays English.
+(() => {
+  let lang = null;
+  try { const s = localStorage.getItem('oberlune-lang'); if (s === 'ar' || s === 'en') lang = s; } catch {}
+  if (!lang) {
+    const list = navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ''];
+    lang = list.some(l => /^ar(-|$)/i.test(l)) ? 'ar' : 'en';
+  }
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+})();
+</script>
 </head>
 <body>
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
 <symbol id="wm" viewBox="56 -754 3476 768"><path d="M308.0 10Q233.0 10 177.5 -25.0Q122.0 -60 91.0 -122.0Q60.0 -184 60.0 -265Q60.0 -347 87.5 -420.0Q115.0 -493 164.0 -549.5Q213.0 -606 278.5 -638.0Q344.0 -670 420.0 -670Q496.0 -670 551.5 -635.5Q607.0 -601 638.0 -539.0Q669.0 -477 669.0 -395Q669.0 -318 642.5 -245.5Q616.0 -173 568.0 -115.5Q520.0 -58 454.0 -24.0Q388.0 10 308.0 10ZM336.0 -24Q391.0 -24 438.5 -51.0Q486.0 -78 522.0 -127.0Q558.0 -176 578.0 -241.5Q598.0 -307 598.0 -383Q598.0 -459 572.0 -516.0Q546.0 -573 500.5 -605.5Q455.0 -638 396.0 -638Q339.0 -638 290.5 -610.5Q242.0 -583 206.5 -534.0Q171.0 -485 151.0 -420.0Q131.0 -355 131.0 -279Q131.0 -204 157.0 -146.0Q183.0 -88 229.0 -56.0Q275.0 -24 336.0 -24ZM902.0 10Q876.0 10 849.5 1.5Q823.0 -7 803.0 -21L766.0 5H759.0L882.0 -695L813.0 -715V-723L945.0 -750H951.0L879.0 -339H883.0Q927.0 -393 966.5 -426.5Q1006.0 -460 1055.0 -460Q1096.0 -460 1121.5 -424.0Q1147.0 -388 1147.0 -318Q1147.0 -256 1127.0 -197.0Q1107.0 -138 1072.5 -91.5Q1038.0 -45 994.0 -17.5Q950.0 10 902.0 10ZM1022.0 -410Q987.0 -410 947.5 -379.0Q908.0 -348 872.0 -299L832.0 -68Q856.0 -41 879.0 -31.5Q902.0 -22 927.0 -22Q971.0 -22 1007.5 -56.0Q1044.0 -90 1066.0 -152.0Q1088.0 -214 1088.0 -298Q1088.0 -410 1022.0 -410ZM1369.0 10Q1294.0 10 1258.5 -35.5Q1223.0 -81 1223.0 -155Q1223.0 -213 1243.0 -268.0Q1263.0 -323 1298.0 -366.0Q1333.0 -409 1377.0 -434.5Q1421.0 -460 1469.0 -460Q1520.0 -460 1545.5 -436.0Q1571.0 -412 1571.0 -382Q1571.0 -350 1543.0 -322.5Q1515.0 -295 1452.5 -273.5Q1390.0 -252 1284.0 -237Q1280.0 -209 1280.0 -178Q1280.0 -110 1310.5 -73.0Q1341.0 -36 1396.0 -36Q1476.0 -36 1536.0 -129H1538.0L1546.0 -123Q1520.0 -67 1473.5 -28.5Q1427.0 10 1369.0 10ZM1448.0 -432Q1391.0 -432 1348.0 -385.5Q1305.0 -339 1288.0 -262Q1409.0 -280 1460.0 -305.5Q1511.0 -331 1511.0 -378Q1511.0 -401 1495.0 -416.5Q1479.0 -432 1448.0 -432ZM1650.0 0 1722.0 -404 1651.0 -425V-433L1774.0 -460H1778.0L1770.0 -344H1774.0Q1808.0 -391 1830.5 -416.5Q1853.0 -442 1870.0 -451.0Q1887.0 -460 1903.0 -460Q1921.0 -460 1933.5 -450.0Q1946.0 -440 1946.0 -429Q1946.0 -422 1943.0 -414L1927.0 -377L1867.0 -402Q1843.0 -391 1819.0 -366.5Q1795.0 -342 1761.0 -292L1709.0 0ZM2013.0 10Q1984.0 10 1972.0 -14.5Q1960.0 -39 1969.0 -92L2076.0 -695L2002.0 -715V-723L2136.0 -750H2145.0L2032.0 -119Q2026.0 -79 2029.0 -63.5Q2032.0 -48 2047.0 -48Q2065.0 -48 2085.0 -68.0Q2105.0 -88 2123.0 -127L2137.0 -122Q2109.0 -52 2077.5 -21.0Q2046.0 10 2013.0 10ZM2301.0 10Q2262.0 10 2240.0 -16.0Q2218.0 -42 2218.0 -91Q2218.0 -101 2219.5 -113.0Q2221.0 -125 2223.0 -138L2271.0 -404L2201.0 -425V-433L2332.0 -460H2338.0L2283.0 -140Q2278.0 -116 2278.0 -102Q2278.0 -74 2291.5 -55.5Q2305.0 -37 2336.0 -37Q2372.0 -37 2407.0 -67.5Q2442.0 -98 2473.0 -132L2521.0 -404L2451.0 -425V-433L2583.0 -460H2589.0L2529.0 -119Q2522.0 -80 2525.5 -64.0Q2529.0 -48 2544.0 -48Q2563.0 -48 2583.0 -68.0Q2603.0 -88 2620.0 -127L2634.0 -122Q2606.0 -52 2574.5 -21.0Q2543.0 10 2511.0 10Q2481.0 10 2469.0 -15.0Q2457.0 -40 2466.0 -92L2467.0 -97H2463.0Q2429.0 -58 2403.5 -34.5Q2378.0 -11 2354.0 -0.5Q2330.0 10 2301.0 10ZM2683.0 0 2754.0 -404 2685.0 -425V-433L2805.0 -460H2810.0L2802.0 -352H2806.0Q2859.0 -411 2895.5 -435.5Q2932.0 -460 2977.0 -460Q3026.0 -460 3050.5 -422.0Q3075.0 -384 3062.0 -312L3027.0 -119Q3020.0 -79 3023.5 -63.5Q3027.0 -48 3042.0 -48Q3060.0 -48 3080.0 -68.0Q3100.0 -88 3118.0 -127L3131.0 -122Q3104.0 -52 3072.5 -21.0Q3041.0 10 3008.0 10Q2979.0 10 2967.0 -14.5Q2955.0 -39 2964.0 -92L3003.0 -316Q3010.0 -356 2997.0 -384.5Q2984.0 -413 2942.0 -413Q2917.0 -413 2891.5 -398.5Q2866.0 -384 2842.0 -362.0Q2818.0 -340 2797.0 -317L2742.0 0ZM3326.0 10Q3251.0 10 3215.5 -35.5Q3180.0 -81 3180.0 -155Q3180.0 -213 3200.0 -268.0Q3220.0 -323 3255.0 -366.0Q3290.0 -409 3334.0 -434.5Q3378.0 -460 3426.0 -460Q3477.0 -460 3502.5 -436.0Q3528.0 -412 3528.0 -382Q3528.0 -350 3500.0 -322.5Q3472.0 -295 3409.5 -273.5Q3347.0 -252 3241.0 -237Q3237.0 -209 3237.0 -178Q3237.0 -110 3267.5 -73.0Q3298.0 -36 3353.0 -36Q3433.0 -36 3493.0 -129H3495.0L3503.0 -123Q3477.0 -67 3430.5 -28.5Q3384.0 10 3326.0 10ZM3405.0 -432Q3348.0 -432 3305.0 -385.5Q3262.0 -339 3245.0 -262Q3366.0 -280 3417.0 -305.5Q3468.0 -331 3468.0 -378Q3468.0 -401 3452.0 -416.5Q3436.0 -432 3405.0 -432Z"/></symbol>
@@ -295,24 +351,25 @@ footer .meta a { color: var(--ol-fg); }
   <div class="horizon" aria-hidden="true"></div>
 
   <div class="wrap masthead">
-    <a class="lock" href="#top" aria-label="Oberlune, back to top">
+    <a class="lock" href="#top" dir="ltr" aria-label="Oberlune, back to top" data-i18n-attr="aria-label:lock.aria">
       <svg class="mk" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" focusable="false"><use href="#m32"/></svg>
       <svg class="wm" viewBox="0 0 3476 768" fill="currentColor" aria-hidden="true" focusable="false"><use href="#wm"/></svg>
     </a>
-    <nav aria-label="Primary">
-      <a class="navlink" href="#services">Services</a>
-      <a class="navlink" href="#process">Process</a>
-      <a class="navlink" href="#about">About</a>
-      <a class="navcta" href="#brief-section">Start a brief</a>
+    <nav aria-label="Primary" data-i18n-attr="aria-label:nav.aria">
+      <a class="navlink" href="#services" data-i18n="nav.services">Services</a>
+      <a class="navlink" href="#process" data-i18n="nav.process">Process</a>
+      <a class="navlink" href="#about" data-i18n="nav.about">About</a>
+      <a class="navcta" href="#brief-section" data-i18n="cta.brief">Start a brief</a>
+      <button class="langbtn" type="button" id="lang-toggle" hidden aria-label="العربية — Switch to Arabic"><span lang="ar">العربية</span></button>
     </nav>
   </div>
 
   <div class="wrap hero-copy">
-    <h1>Video, brand and web — <em>run by one person who answers for all of it.</em></h1>
-    <p class="sub"><span translate="no">Oberlune</span> plans, produces and delivers creative work for brands across the Gulf and beyond. You deal with me from brief to final file.</p>
+    <h1 data-i18n="hero.h1">Video, brand and web — <em>run by one person who answers for all of it.</em></h1>
+    <p class="sub" data-i18n="hero.sub"><span translate="no">Oberlune</span> plans, produces and delivers creative work for brands across the Gulf and beyond. You deal with me from brief to final file.</p>
     <div class="actions">
-      <a class="btn" href="#brief-section">Start a brief</a>
-      <span class="note">Quote within 24 hours</span>
+      <a class="btn" href="#brief-section" data-i18n="cta.brief">Start a brief</a>
+      <span class="note" data-i18n="hero.note">Quote within 24 hours</span>
     </div>
   </div>
 </header>
@@ -321,29 +378,29 @@ footer .meta a { color: var(--ol-fg); }
   <section class="band" id="services" aria-labelledby="services-h">
     <div class="wrap">
       <div class="head">
-        <h2 id="services-h">Three services, one person to answer to.</h2>
+        <h2 id="services-h" data-i18n="svc.h">Three services, one person to answer to.</h2>
       </div>
       <div class="svc">
         <article class="svc-lead">
-          <h3>Video</h3>
-          <p>Ads, short-form series and product videos, cut for the platform they will run on. Video leads what <span translate="no">Oberlune</span> does, and I edit in Premiere myself.</p>
+          <h3 data-i18n="svc.video.h">Video</h3>
+          <p data-i18n="svc.video.p">Ads, short-form series and product videos, cut for the platform they will run on. Video leads what <span translate="no">Oberlune</span> does, and I edit in Premiere myself.</p>
           <ul class="formats">
-            <li><b>Ads</b><span>Paid spots that stop the scroll and say one thing clearly.</span></li>
-            <li><b>Short-form</b><span>Series for Reels, TikTok and Shorts, planned as a set rather than one-offs.</span></li>
-            <li><b>Product</b><span>Your product footage or photos, cut or animated so the detail does the selling.</span></li>
+            <li><b data-i18n="fmt.ads.b">Ads</b><span data-i18n="fmt.ads.p">Paid spots that stop the scroll and say one thing clearly.</span></li>
+            <li><b data-i18n="fmt.short.b">Short-form</b><span data-i18n="fmt.short.p">Series for Reels, TikTok and Shorts, planned as a set rather than one-offs.</span></li>
+            <li><b data-i18n="fmt.product.b">Product</b><span data-i18n="fmt.product.p">Your product footage or photos, cut or animated so the detail does the selling.</span></li>
           </ul>
-          <a class="tlink" href="#brief-section" data-pick="Video">Start a video brief</a>
+          <a class="tlink" href="#brief-section" data-pick="Video" data-i18n="svc.video.cta">Start a video brief</a>
         </article>
         <div class="svc-side">
           <article>
-            <h3>Brand identity</h3>
-            <p>A logo, colours and type, guidelines and social templates: one system that holds together wherever your name appears.</p>
-            <a class="tlink" href="#brief-section" data-pick="Brand identity">Start a brand brief</a>
+            <h3 data-i18n="svc.brand.h">Brand identity</h3>
+            <p data-i18n="svc.brand.p">A logo, colours and type, guidelines and social templates: one system that holds together wherever your name appears.</p>
+            <a class="tlink" href="#brief-section" data-pick="Brand identity" data-i18n="svc.brand.cta">Start a brand brief</a>
           </article>
           <article>
-            <h3>Websites</h3>
-            <p>Clear, fast sites with the features you actually need: booking, a store, a blog, more than one language.</p>
-            <a class="tlink" href="#brief-section" data-pick="Website">Start a website brief</a>
+            <h3 data-i18n="svc.web.h">Websites</h3>
+            <p data-i18n="svc.web.p">Clear, fast sites with the features you actually need: booking, a store, a blog, more than one language.</p>
+            <a class="tlink" href="#brief-section" data-pick="Website" data-i18n="svc.web.cta">Start a website brief</a>
           </article>
         </div>
       </div>
@@ -353,15 +410,15 @@ footer .meta a { color: var(--ol-fg); }
   <section class="band" id="process" aria-labelledby="process-h">
     <div class="wrap">
       <div class="head">
-        <h2 id="process-h">How a project runs</h2>
-        <p>The same five steps every time, so you always know what happens next and what you pay for.</p>
+        <h2 id="process-h" data-i18n="proc.h">How a project runs</h2>
+        <p data-i18n="proc.p">The same five steps every time, so you always know what happens next and what you pay for.</p>
       </div>
       <ol class="steps">
-        <li><span class="n">1</span><h3>Brief</h3><p>Fill in the form below. No call needed to get started.</p></li>
-        <li class="key"><span class="n">2</span><h3>Quote within 24 hours</h3><p>A fixed price and a delivery date, in writing.</p></li>
-        <li><span class="n">3</span><h3>50% deposit</h3><p>Paid by PayPal. Production starts once it lands.</p></li>
-        <li><span class="n">4</span><h3>Watermarked preview</h3><p>You see the finished work and get two rounds of changes.</p></li>
-        <li><span class="n">5</span><h3>Balance &amp; final files</h3><p>Pay the remaining 50% and receive the clean, full files.</p></li>
+        <li><span class="n">1</span><h3 data-i18n="step1.h">Brief</h3><p data-i18n="step1.p">Fill in the form below. No call needed to get started.</p></li>
+        <li class="key"><span class="n">2</span><h3 data-i18n="step2.h">Quote within 24 hours</h3><p data-i18n="step2.p">A fixed price and a delivery date, in writing.</p></li>
+        <li><span class="n">3</span><h3 data-i18n="step3.h">50% deposit</h3><p data-i18n="step3.p">Paid by PayPal. Production starts once it lands.</p></li>
+        <li><span class="n">4</span><h3 data-i18n="step4.h">Watermarked preview</h3><p data-i18n="step4.p">You see the finished work and get two rounds of changes.</p></li>
+        <li><span class="n">5</span><h3 data-i18n="step5.h">Balance &amp; final files</h3><p data-i18n="step5.p">Pay the remaining 50% and receive the clean, full files.</p></li>
       </ol>
     </div>
   </section>
@@ -369,186 +426,191 @@ footer .meta a { color: var(--ol-fg); }
   <section class="band" id="brief-section" aria-labelledby="brief-h">
     <div class="wrap brief">
       <div class="head">
-        <h2 id="brief-h">Start a brief</h2>
-        <p>Tell me what you need. A fixed quote reaches you within 24 hours.</p>
-        <p class="req-note">Fields marked <span class="req" aria-hidden="true">*</span> are required. The rest help me quote accurately.</p>
+        <h2 id="brief-h" data-i18n="cta.brief">Start a brief</h2>
+        <p data-i18n="brief.p">Tell me what you need. A fixed quote reaches you within 24 hours.</p>
+        <p class="req-note" data-i18n="brief.req">Fields marked <span class="req" aria-hidden="true">*</span> are required. The rest help me quote accurately.</p>
       </div>
 
       <form id="brief" action="https://api.web3forms.com/submit" method="POST">
         <input type="hidden" name="access_key" value="0fa66c38-e73e-424e-9d67-86cf4b312cc5">
-        <input type="hidden" name="subject" value="New Oberlune brief">
+        <input type="hidden" name="subject" value="New Oberlune brief (EN)">
         <input type="hidden" name="from_name" value="Oberlune site">
+        <input type="hidden" name="language" value="en">
         <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
 
         <fieldset>
-          <legend class="vh">About you</legend>
+          <legend class="vh" data-i18n="leg.you">About you</legend>
           <div class="row2">
             <div class="field">
-              <label for="f-name">Name<span class="req" aria-hidden="true">*</span></label>
+              <label for="f-name"><span data-i18n="f.name">Name</span><span class="req" aria-hidden="true">*</span></label>
               <input id="f-name" name="name" type="text" autocomplete="name" required>
             </div>
             <div class="field">
-              <label for="f-email">Email<span class="req" aria-hidden="true">*</span></label>
-              <input id="f-email" name="email" type="email" autocomplete="email" spellcheck="false" required>
+              <label for="f-email"><span data-i18n="f.email">Email</span><span class="req" aria-hidden="true">*</span></label>
+              <input id="f-email" name="email" type="email" dir="ltr" autocomplete="email" spellcheck="false" required>
             </div>
             <div class="field">
-              <label for="f-company">Company</label>
+              <label for="f-company" data-i18n="f.company">Company</label>
               <input id="f-company" name="company" type="text" autocomplete="organization">
             </div>
             <div class="field">
-              <label for="f-link">Website or social link</label>
-              <input id="f-link" name="link" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="e.g. instagram.com/yourbrand…">
+              <label for="f-link" data-i18n="f.link">Website or social link</label>
+              <input id="f-link" name="link" type="text" dir="ltr" inputmode="url" autocomplete="url" spellcheck="false" placeholder="e.g. instagram.com/yourbrand…" data-i18n-attr="placeholder:ph.link">
             </div>
           </div>
         </fieldset>
 
         <fieldset class="group">
-          <legend class="group-label">Service<span class="req" aria-hidden="true">*</span></legend>
+          <legend class="group-label"><span data-i18n="f.service">Service</span><span class="req" aria-hidden="true">*</span></legend>
           <div class="choice">
-            <label><input class="vh" type="radio" name="service" value="Video" required><b>Video</b><small>Ads, short-form, product</small></label>
-            <label><input class="vh" type="radio" name="service" value="Brand identity"><b>Brand identity</b><small>Logo, type, guidelines</small></label>
-            <label><input class="vh" type="radio" name="service" value="Website"><b>Website</b><small>Pages, store, booking</small></label>
+            <label><input class="vh" type="radio" name="service" value="Video" required><b data-i18n="ch.video.b">Video</b><small data-i18n="ch.video.s">Ads, short-form, product</small></label>
+            <label><input class="vh" type="radio" name="service" value="Brand identity"><b data-i18n="ch.brand.b">Brand identity</b><small data-i18n="ch.brand.s">Logo, type, guidelines</small></label>
+            <label><input class="vh" type="radio" name="service" value="Website"><b data-i18n="ch.web.b">Website</b><small data-i18n="ch.web.s">Pages, store, booking</small></label>
           </div>
         </fieldset>
 
         <fieldset class="svc-fields" data-service="Video">
-          <legend>Video details</legend>
+          <legend data-i18n="leg.video">Video details</legend>
           <div class="row3">
             <div class="field">
-              <label for="v-type">Type</label>
+              <label for="v-type" data-i18n="v.type">Type</label>
               <select id="v-type" name="video_type">
-                <option value="">Choose…</option>
-                <option>Ad</option><option>Short-form series</option><option>Product video</option><option>Talking head</option><option>Other</option>
+                <option value="" data-i18n="opt.choose">Choose…</option>
+                <option value="Ad" data-i18n="opt.ad">Ad</option>
+                <option value="Short-form series" data-i18n="opt.series">Short-form series</option>
+                <option value="Product video" data-i18n="opt.product">Product video</option>
+                <option value="Talking head" data-i18n="opt.talking">Talking head</option>
+                <option value="Other" data-i18n="opt.other">Other</option>
               </select>
             </div>
             <div class="field">
-              <label for="v-length">Final length <span class="hint">(seconds)</span></label>
+              <label for="v-length"><span data-i18n="v.length">Final length</span> <span class="hint" data-i18n="v.length.h">(seconds)</span></label>
               <input id="v-length" name="video_length_seconds" autocomplete="off" type="number" min="1" inputmode="numeric">
             </div>
             <div class="field">
-              <label for="v-count">Number of videos</label>
+              <label for="v-count" data-i18n="v.count">Number of videos</label>
               <input id="v-count" name="video_count" autocomplete="off" type="number" min="1" inputmode="numeric">
             </div>
           </div>
           <div class="group" role="radiogroup" aria-labelledby="v-raw-l">
-            <span class="group-label" id="v-raw-l">Raw footage ready?</span>
+            <span class="group-label" id="v-raw-l" data-i18n="v.raw">Raw footage ready?</span>
             <div class="chips">
-              <label><input class="vh" type="radio" name="video_footage_ready" value="Yes">Yes</label>
-              <label><input class="vh" type="radio" name="video_footage_ready" value="No">No</label>
+              <label><input class="vh" type="radio" name="video_footage_ready" value="Yes"><span data-i18n="yes">Yes</span></label>
+              <label><input class="vh" type="radio" name="video_footage_ready" value="No"><span data-i18n="no">No</span></label>
             </div>
           </div>
           <div class="field">
-            <label for="v-ref1">Reference links <span class="hint">(up to 3)</span></label>
+            <label for="v-ref1"><span data-i18n="v.refs">Reference links</span> <span class="hint" data-i18n="v.refs.h">(up to 3)</span></label>
             <div class="refs">
-              <input id="v-ref1" name="video_references" type="text" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. youtube.com/watch?v=…" aria-label="Reference link 1">
-              <input name="video_references" type="text" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. instagram.com/p/…" aria-label="Reference link 2">
-              <input name="video_references" type="text" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. tiktok.com/@brand/video/…" aria-label="Reference link 3">
+              <input id="v-ref1" name="video_references" type="text" dir="ltr" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. youtube.com/watch?v=…" aria-label="Reference link 1" data-i18n-attr="placeholder:ph.ref1;aria-label:ref1.aria">
+              <input name="video_references" type="text" dir="ltr" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. instagram.com/p/…" aria-label="Reference link 2" data-i18n-attr="placeholder:ph.ref2;aria-label:ref2.aria">
+              <input name="video_references" type="text" dir="ltr" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. tiktok.com/@brand/video/…" aria-label="Reference link 3" data-i18n-attr="placeholder:ph.ref3;aria-label:ref3.aria">
             </div>
           </div>
           <div class="group" role="group" aria-labelledby="v-plat-l">
-            <span class="group-label" id="v-plat-l">Platforms</span>
+            <span class="group-label" id="v-plat-l" data-i18n="v.plat">Platforms</span>
             <div class="chips">
-              <label><input class="vh" type="checkbox" name="video_platforms" value="Instagram">Instagram</label>
-              <label><input class="vh" type="checkbox" name="video_platforms" value="TikTok">TikTok</label>
-              <label><input class="vh" type="checkbox" name="video_platforms" value="YouTube">YouTube</label>
-              <label><input class="vh" type="checkbox" name="video_platforms" value="LinkedIn">LinkedIn</label>
-              <label><input class="vh" type="checkbox" name="video_platforms" value="Other">Other</label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="Instagram"><span translate="no">Instagram</span></label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="TikTok"><span translate="no">TikTok</span></label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="YouTube"><span translate="no">YouTube</span></label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="LinkedIn"><span translate="no">LinkedIn</span></label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="Other"><span data-i18n="plat.other">Other</span></label>
             </div>
           </div>
         </fieldset>
 
         <fieldset class="svc-fields" data-service="Brand identity">
-          <legend>Brand details</legend>
+          <legend data-i18n="leg.brand">Brand details</legend>
           <div class="group" role="radiogroup" aria-labelledby="b-stage-l">
-            <span class="group-label" id="b-stage-l">Stage</span>
+            <span class="group-label" id="b-stage-l" data-i18n="b.stage">Stage</span>
             <div class="chips">
-              <label><input class="vh" type="radio" name="brand_stage" value="New brand">New brand</label>
-              <label><input class="vh" type="radio" name="brand_stage" value="Refresh">Refresh</label>
+              <label><input class="vh" type="radio" name="brand_stage" value="New brand"><span data-i18n="b.new">New brand</span></label>
+              <label><input class="vh" type="radio" name="brand_stage" value="Refresh"><span data-i18n="b.refresh">Refresh</span></label>
             </div>
           </div>
           <div class="row2">
             <div class="field">
-              <label for="b-industry">Industry</label>
+              <label for="b-industry" data-i18n="b.industry">Industry</label>
               <input id="b-industry" name="brand_industry" autocomplete="off" type="text">
             </div>
             <div class="field">
-              <label for="b-words">3 words for the brand’s personality</label>
-              <input id="b-words" name="brand_personality" autocomplete="off" type="text" placeholder="e.g. calm, exact, warm…">
+              <label for="b-words" data-i18n="b.words">3 words for the brand’s personality</label>
+              <input id="b-words" name="brand_personality" autocomplete="off" type="text" placeholder="e.g. calm, exact, warm…" data-i18n-attr="placeholder:ph.words">
             </div>
           </div>
           <div class="group" role="group" aria-labelledby="b-del-l">
-            <span class="group-label" id="b-del-l">Deliverables</span>
+            <span class="group-label" id="b-del-l" data-i18n="b.del">Deliverables</span>
             <div class="chips">
-              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Logo">Logo</label>
-              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Colors & type">Colors &amp; type</label>
-              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Brand guidelines">Brand guidelines</label>
-              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Social templates">Social templates</label>
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Logo"><span data-i18n="b.logo">Logo</span></label>
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Colors & type"><span data-i18n="b.colors">Colors &amp; type</span></label>
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Brand guidelines"><span data-i18n="b.guide">Brand guidelines</span></label>
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Social templates"><span data-i18n="b.social">Social templates</span></label>
             </div>
           </div>
           <div class="field">
-            <label for="b-admire">Brands you admire <span class="hint">(links)</span></label>
-            <textarea id="b-admire" name="brand_admired" autocomplete="off" rows="3" spellcheck="false"></textarea>
+            <label for="b-admire"><span data-i18n="b.admire">Brands you admire</span> <span class="hint" data-i18n="links.h">(links)</span></label>
+            <textarea id="b-admire" name="brand_admired" dir="ltr" autocomplete="off" rows="3" spellcheck="false"></textarea>
           </div>
         </fieldset>
 
         <fieldset class="svc-fields" data-service="Website">
-          <legend>Website details</legend>
+          <legend data-i18n="leg.web">Website details</legend>
           <div class="row2">
             <div class="field">
-              <label for="w-pages">Pages needed</label>
+              <label for="w-pages" data-i18n="w.pages">Pages needed</label>
               <input id="w-pages" name="website_pages" autocomplete="off" type="number" min="1" inputmode="numeric">
             </div>
             <div class="field">
-              <label for="w-existing">Existing site <span class="hint">(link)</span></label>
-              <input id="w-existing" name="website_existing" autocomplete="off" type="text" inputmode="url" spellcheck="false">
+              <label for="w-existing"><span data-i18n="w.existing">Existing site</span> <span class="hint" data-i18n="link.h">(link)</span></label>
+              <input id="w-existing" name="website_existing" autocomplete="off" type="text" dir="ltr" inputmode="url" spellcheck="false">
             </div>
           </div>
           <div class="group" role="radiogroup" aria-labelledby="w-content-l">
-            <span class="group-label" id="w-content-l">Content ready?</span>
+            <span class="group-label" id="w-content-l" data-i18n="w.content">Content ready?</span>
             <div class="chips">
-              <label><input class="vh" type="radio" name="website_content_ready" value="Yes">Yes</label>
-              <label><input class="vh" type="radio" name="website_content_ready" value="Partly">Partly</label>
-              <label><input class="vh" type="radio" name="website_content_ready" value="No">No</label>
+              <label><input class="vh" type="radio" name="website_content_ready" value="Yes"><span data-i18n="yes">Yes</span></label>
+              <label><input class="vh" type="radio" name="website_content_ready" value="Partly"><span data-i18n="partly">Partly</span></label>
+              <label><input class="vh" type="radio" name="website_content_ready" value="No"><span data-i18n="no">No</span></label>
             </div>
           </div>
           <div class="group" role="group" aria-labelledby="w-feat-l">
-            <span class="group-label" id="w-feat-l">Must-have features</span>
+            <span class="group-label" id="w-feat-l" data-i18n="w.feat">Must-have features</span>
             <div class="chips">
-              <label><input class="vh" type="checkbox" name="website_features" value="Booking">Booking</label>
-              <label><input class="vh" type="checkbox" name="website_features" value="Store">Store</label>
-              <label><input class="vh" type="checkbox" name="website_features" value="Blog">Blog</label>
-              <label><input class="vh" type="checkbox" name="website_features" value="Multilingual">Multilingual</label>
-              <label><input class="vh" type="checkbox" name="website_features" value="Forms">Forms</label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Booking"><span data-i18n="w.booking">Booking</span></label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Store"><span data-i18n="w.store">Store</span></label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Blog"><span data-i18n="w.blog">Blog</span></label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Multilingual"><span data-i18n="w.multi">Multilingual</span></label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Forms"><span data-i18n="w.forms">Forms</span></label>
             </div>
           </div>
         </fieldset>
 
         <fieldset>
-          <legend class="vh">Timing and budget</legend>
+          <legend class="vh" data-i18n="leg.timing">Timing and budget</legend>
           <div class="row2">
             <div class="field">
-              <label for="f-deadline">Deadline</label>
-              <input id="f-deadline" name="deadline" type="text" autocomplete="off" placeholder="e.g. mid-December, or a date">
+              <label for="f-deadline" data-i18n="f.deadline">Deadline</label>
+              <input id="f-deadline" name="deadline" type="text" autocomplete="off" placeholder="e.g. mid-December, or a date" data-i18n-attr="placeholder:ph.deadline">
             </div>
             <div class="field">
-              <label for="f-budget">Budget range</label>
+              <label for="f-budget" data-i18n="f.budget">Budget range</label>
               <select id="f-budget" name="budget">
-                <option value="">Choose…</option>
-                <option>&lt;$500</option>
-                <option>$500–1,500</option>
-                <option>$1,500–5,000</option>
-                <option>$5,000+</option>
+                <option value="" data-i18n="opt.choose">Choose…</option>
+                <option value="&lt;$500" data-i18n="bud.1">&lt;$500</option>
+                <option value="$500–1,500" data-i18n="bud.2">$500–1,500</option>
+                <option value="$1,500–5,000" data-i18n="bud.3">$1,500–5,000</option>
+                <option value="$5,000+" data-i18n="bud.4">$5,000+</option>
               </select>
             </div>
           </div>
           <div class="field">
-            <label for="f-message">Anything else</label>
+            <label for="f-message" data-i18n="f.message">Anything else</label>
             <textarea id="f-message" name="message" autocomplete="off" rows="5"></textarea>
           </div>
         </fieldset>
 
         <div class="submit-row">
-          <button class="btn" type="submit">Send brief</button>
+          <button class="btn" type="submit" data-i18n="f.send">Send brief</button>
           <p id="brief-status" role="status" aria-live="polite"></p>
         </div>
       </form>
@@ -557,10 +619,10 @@ footer .meta a { color: var(--ol-fg); }
 
   <section class="band" id="about" aria-labelledby="about-h">
     <div class="wrap about">
-      <h2 id="about-h">I’m Faisal Barom. <em>I answer for the work.</em></h2>
+      <h2 id="about-h" data-i18n="about.h">I’m Faisal Barom. <em>I answer for the work.</em></h2>
       <div class="body">
-        <p>I run Oberlune. When you send a brief, I’m the one who reads it, prices it, plans the work and checks every file before it reaches you. There are no account managers to be passed between.</p>
-        <p>I edit video in Premiere myself. When a project needs a specialist, such as a type designer or a developer, I brief them, review what they make and stay your single point of contact. Either way, the result is mine to answer for.</p>
+        <p data-i18n="about.p1">I run <span translate="no">Oberlune</span>. When you send a brief, I’m the one who reads it, prices it, plans the work and checks every file before it reaches you. There are no account managers to be passed between.</p>
+        <p data-i18n="about.p2">I edit video in Premiere myself. When a project needs a specialist, such as a type designer or a developer, I brief them, review what they make and stay your single point of contact. Either way, the result is mine to answer for.</p>
       </div>
     </div>
   </section>
@@ -568,23 +630,212 @@ footer .meta a { color: var(--ol-fg); }
 
 <footer>
   <div class="wrap">
-    <a class="lock" href="#top" aria-label="Oberlune, back to top">
+    <a class="lock" href="#top" dir="ltr" aria-label="Oberlune, back to top" data-i18n-attr="aria-label:lock.aria">
       <svg class="mk" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" focusable="false"><use href="#m32"/></svg>
       <svg class="wm" viewBox="0 0 3476 768" fill="currentColor" aria-hidden="true" focusable="false"><use href="#wm"/></svg>
     </a>
     <div class="meta">
-      <span>© 2026 <span translate="no">Oberlune</span></span>
-      <a class="tlink" href="#brief-section">Start a brief</a>
+      <span dir="ltr">© 2026 <span translate="no">Oberlune</span></span>
+      <a class="tlink" href="#brief-section" data-i18n="cta.brief">Start a brief</a>
     </div>
   </div>
 </footer>
 
 <script>
 (() => {
+  // ---- strings ----
+  // English for the markup lives in the markup itself (the no-JS default) and is copied
+  // into I18N.en on load, so English has one source. Arabic keys must match one to one;
+  // a missing key is reported as a console error, which verify.mjs treats as a failure.
+  // "Oberlune" and product names stay Latin inside Arabic, isolated with <bdi>.
+  const B = n => `<bdi translate="no">${n}</bdi>`;
+  const I18N = {
+    en: {
+      'lang.name': 'English',
+      'lang.switch': 'العربية — Switch to Arabic',
+      'status.sending': 'Sending…',
+      'status.ok': 'Brief received — you’ll get a quote within 24 hours.',
+      'status.err': 'This didn’t send. Please try again in a moment.',
+    },
+    ar: {
+      'lang.name': 'العربية',
+      'lang.switch': 'English — التبديل إلى الإنجليزية',
+      'status.sending': 'جارٍ الإرسال…',
+      'status.ok': 'وصلني الطلب — سيصلك عرض السعر خلال 24 ساعة.',
+      'status.err': 'لم يُرسَل الطلب. حاول مرة أخرى بعد قليل.',
+
+      'meta.title': 'Oberlune · فيديو وهوية ومواقع',
+      'meta.desc': 'يخطّط Oberlune الفيديو والهوية البصرية والمواقع وينتجها ويسلّمها لعلامات تجارية في الخليج وخارجه. شخص واحد مسؤول عن كل شيء. عرض سعر خلال 24 ساعة.',
+      'skip': 'انتقل إلى المحتوى',
+      'lock.aria': 'Oberlune، العودة إلى أعلى الصفحة',
+      'nav.aria': 'القائمة الرئيسية',
+      'nav.services': 'الخدمات',
+      'nav.process': 'طريقة العمل',
+      'nav.about': 'من أنا',
+      'cta.brief': 'ابدأ طلبك',
+
+      'hero.h1': 'فيديو وهوية ومواقع — <em>يتولّاها شخص&nbsp;واحد، ويُسأل عن كل شيء.</em>',
+      'hero.sub': `يخطّط ${B('Oberlune')} للأعمال الإبداعية وينتجها ويسلّمها لعلامات تجارية في الخليج وخارجه. تتعامل معي مباشرة، من أول طلب حتى الملف الأخير.`,
+      'hero.note': 'عرض سعر خلال 24 ساعة',
+
+      'svc.h': 'ثلاث خدمات، وشخص&nbsp;واحد مسؤول أمامك.',
+      'svc.video.h': 'الفيديو',
+      'svc.video.p': `إعلانات وسلاسل مقاطع قصيرة وفيديوهات منتجات، يُجهَّز كلٌّ منها للمنصة التي سيُعرض عليها. الفيديو أول ما يقدّمه ${B('Oberlune')}، وأتولّى المونتاج بنفسي على ${B('Premiere')}.`,
+      'fmt.ads.b': 'إعلانات',
+      'fmt.ads.p': 'إعلانات ممولة توقف التمرير وتقول شيئاً واحداً بوضوح.',
+      'fmt.short.b': 'مقاطع قصيرة',
+      'fmt.short.p': `سلاسل لـ${B('Reels')} و ${B('TikTok')} و ${B('Shorts')}، تُخطَّط مجموعةً متكاملة لا مقاطع متفرقة.`,
+      'fmt.product.b': 'منتجات',
+      'fmt.product.p': 'من لقطاتك أو صورك لمنتجك، بمونتاج أو أنيميشن يترك التفاصيل تبيع عنك.',
+      'svc.video.cta': 'ابدأ طلب فيديو',
+      'svc.brand.h': 'الهوية البصرية',
+      'svc.brand.p': 'شعار، وألوان وخطوط، ودليل استخدام، وقوالب لمنصات التواصل: نظام واحد متماسك أينما ظهر اسمك.',
+      'svc.brand.cta': 'ابدأ طلب هوية',
+      'svc.web.h': 'المواقع',
+      'svc.web.p': 'مواقع واضحة وسريعة، بالمزايا التي تحتاجها فعلاً: حجز، أو متجر، أو مدونة، أو أكثر من لغة.',
+      'svc.web.cta': 'ابدأ طلب موقع',
+
+      'proc.h': 'كيف يسير المشروع',
+      'proc.p': 'الخطوات الخمس نفسها في كل مرة، فتعرف دائماً ما الذي سيحدث بعد ذلك وما الذي تدفع مقابله.',
+      'step1.h': 'الطلب',
+      'step1.p': 'املأ النموذج أدناه. لا حاجة إلى مكالمة للبدء.',
+      'step2.h': 'عرض سعر خلال 24 ساعة',
+      'step2.p': 'سعر ثابت وموعد تسليم، مكتوبان.',
+      'step3.h': 'دفعة مقدمة 50%',
+      'step3.p': `تُدفع عبر ${B('PayPal')}، ويبدأ التنفيذ فور وصولها.`,
+      'step4.h': 'معاينة بعلامة مائية',
+      'step4.p': 'ترى العمل مكتملاً، ولك جولتان من التعديلات.',
+      'step5.h': 'المتبقي والملفات النهائية',
+      'step5.p': 'تدفع الـ50% المتبقية وتستلم الملفات كاملة بلا علامة مائية.',
+
+      'brief.p': 'أخبرني بما تحتاجه، ويصلك عرض سعر ثابت خلال 24 ساعة.',
+      'brief.req': 'الحقول المعلَّمة بـ<span class="req" aria-hidden="true">*</span> مطلوبة، والباقي يساعدني على تسعير دقيق.',
+      'leg.you': 'عنك',
+      'f.name': 'الاسم',
+      'f.email': 'البريد الإلكتروني',
+      'f.company': 'الشركة',
+      'f.link': 'الموقع أو رابط حساب التواصل',
+      'ph.link': 'instagram.com/yourbrand…',
+      'f.service': 'الخدمة',
+      'ch.video.b': 'فيديو',
+      'ch.video.s': 'إعلانات، مقاطع قصيرة، منتجات',
+      'ch.brand.b': 'هوية بصرية',
+      'ch.brand.s': 'شعار، خطوط، دليل استخدام',
+      'ch.web.b': 'موقع',
+      'ch.web.s': 'صفحات، متجر، حجز',
+      'leg.video': 'تفاصيل الفيديو',
+      'v.type': 'النوع',
+      'opt.choose': 'اختر…',
+      'opt.ad': 'إعلان',
+      'opt.series': 'سلسلة مقاطع قصيرة',
+      'opt.product': 'فيديو منتج',
+      'opt.talking': 'متحدث أمام الكاميرا',
+      'opt.other': 'غير ذلك',
+      'v.length': 'المدة النهائية',
+      'v.length.h': '(بالثواني)',
+      'v.count': 'عدد الفيديوهات',
+      'v.raw': 'هل اللقطات الخام جاهزة؟',
+      'yes': 'نعم',
+      'no': 'لا',
+      'partly': 'جزئياً',
+      'v.refs': 'روابط مرجعية',
+      'v.refs.h': '(حتى 3)',
+      'ph.ref1': 'youtube.com/watch?v=…',
+      'ph.ref2': 'instagram.com/p/…',
+      'ph.ref3': 'tiktok.com/@brand/video/…',
+      'ref1.aria': 'الرابط المرجعي 1',
+      'ref2.aria': 'الرابط المرجعي 2',
+      'ref3.aria': 'الرابط المرجعي 3',
+      'v.plat': 'المنصات',
+      'plat.other': 'غيرها',
+      'leg.brand': 'تفاصيل الهوية',
+      'b.stage': 'المرحلة',
+      'b.new': 'علامة جديدة',
+      'b.refresh': 'تجديد هوية قائمة',
+      'b.industry': 'المجال',
+      'b.words': '3 كلمات تصف شخصية العلامة',
+      'ph.words': 'مثال: هادئة، دقيقة، دافئة…',
+      'b.del': 'المطلوب تسليمه',
+      'b.logo': 'شعار',
+      'b.colors': 'ألوان وخطوط',
+      'b.guide': 'دليل الهوية',
+      'b.social': 'قوالب لمنصات التواصل',
+      'b.admire': 'علامات تعجبك',
+      'links.h': '(روابط)',
+      'leg.web': 'تفاصيل الموقع',
+      'w.pages': 'عدد الصفحات',
+      'w.existing': 'الموقع الحالي',
+      'link.h': '(رابط)',
+      'w.content': 'هل المحتوى جاهز؟',
+      'w.feat': 'المزايا الأساسية',
+      'w.booking': 'حجز',
+      'w.store': 'متجر',
+      'w.blog': 'مدونة',
+      'w.multi': 'تعدد اللغات',
+      'w.forms': 'نماذج',
+      'leg.timing': 'الموعد والميزانية',
+      'f.deadline': 'الموعد النهائي',
+      'ph.deadline': 'مثال: منتصف ديسمبر، أو تاريخ محدد',
+      'f.budget': 'نطاق الميزانية',
+      'bud.1': 'أقل من 500 دولار',
+      'bud.2': 'من 500 إلى 1,500 دولار',
+      'bud.3': 'من 1,500 إلى 5,000 دولار',
+      'bud.4': '5,000 دولار فأكثر',
+      'f.message': 'أي تفاصيل أخرى',
+      'f.send': 'أرسل الطلب',
+
+      'about.h': 'أنا فيصل باروم. <em>والعمل مسؤوليتي.</em>',
+      'about.p1': `أدير ${B('Oberlune')}. حين ترسل طلبك، أكون أنا من يقرؤه ويسعّره ويخطّط للعمل ويراجع كل ملف قبل أن يصلك. لا مديري حسابات تنتقل بينهم.`,
+      'about.p2': `أتولّى مونتاج الفيديو بنفسي على ${B('Premiere')}. وحين يحتاج المشروع إلى متخصص، كمصمم خطوط أو مطوّر، أشرح له المطلوب وأراجع ما ينجزه وأبقى جهة تواصلك الوحيدة. وفي كل الأحوال، النتيجة مسؤوليتي أنا.`,
+    },
+  };
+
+  const root = document.documentElement;
+  const textEls = document.querySelectorAll('[data-i18n]');
+  const attrEls = document.querySelectorAll('[data-i18n-attr]');
+  const attrPairs = el => el.dataset.i18nAttr.split(';').map(p => p.split(':'));
+  textEls.forEach(el => { if (!(el.dataset.i18n in I18N.en)) I18N.en[el.dataset.i18n] = el.innerHTML; });
+  attrEls.forEach(el => attrPairs(el).forEach(([a, k]) => { if (!(k in I18N.en)) I18N.en[k] = el.getAttribute(a); }));
+  I18N.en['meta.title'] = document.title;
+
   const form = document.getElementById('brief');
   const status = document.getElementById('brief-status');
   const button = form.querySelector('button[type=submit]');
   const groups = form.querySelectorAll('fieldset[data-service]');
+  const toggle = document.getElementById('lang-toggle');
+  const toggleLabel = toggle.querySelector('span');
+  const cur = () => (root.lang === 'ar' ? 'ar' : 'en');
+  const t = key => {
+    const d = I18N[cur()];
+    if (key in d) return d[key];
+    console.error(`i18n: missing "${key}" for ${cur()}`);
+    return I18N.en[key];
+  };
+
+  // Swap every string in place. Focus and scroll position are left alone.
+  const apply = lang => {
+    root.lang = lang;
+    root.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    textEls.forEach(el => { el.innerHTML = t(el.dataset.i18n); });
+    attrEls.forEach(el => attrPairs(el).forEach(([a, k]) => el.setAttribute(a, t(k))));
+    document.title = t('meta.title');
+    const other = lang === 'ar' ? 'en' : 'ar';
+    toggleLabel.lang = other;
+    toggleLabel.textContent = I18N[other]['lang.name'];
+    toggle.setAttribute('aria-label', t('lang.switch'));
+    form.elements.language.value = lang;
+    form.elements.subject.value = `New Oberlune brief (${lang.toUpperCase()})`;
+    if (status.dataset.msg) status.textContent = t('status.' + status.dataset.msg);
+  };
+  toggle.addEventListener('click', () => {
+    const next = cur() === 'ar' ? 'en' : 'ar';
+    apply(next);
+    try { localStorage.setItem('oberlune-lang', next); } catch {}
+  });
+  apply(cur());
+  toggle.hidden = false;
+
+  const say = (msg, cls) => { status.dataset.msg = msg; status.className = cls; status.textContent = t('status.' + msg); };
 
   // Show only the chosen service's fields; hidden fields are disabled so they are not sent.
   const sync = () => {
@@ -606,8 +857,7 @@ footer .meta a { color: var(--ol-fg); }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    status.className = '';
-    status.textContent = 'Sending…';
+    say('sending', '');
     button.disabled = true;
     // Collapse multi-value fields (checkbox groups, reference links) into one line each.
     const raw = new FormData(e.target);
@@ -630,12 +880,9 @@ footer .meta a { color: var(--ol-fg); }
         method: 'POST', body, headers: { Accept: 'application/json' }, signal });
       ok = !!(res.ok && (await res.json()).success);
     } catch { ok = false; }
-    status.className = ok ? 'ok' : 'err';
-    status.textContent = ok
-      ? "Brief received — you’ll get a quote within 24 hours."
-      : "This didn’t send. Please try again in a moment.";
+    say(ok ? 'ok' : 'err', ok ? 'ok' : 'err');
     button.disabled = false;
-    if (ok) { form.reset(); sync(); }
+    if (ok) { form.reset(); apply(cur()); sync(); }
   });
 })();
 </script>
