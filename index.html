@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oberlune · Video, brand and web</title>
+<meta name="description" content="Oberlune plans, produces and delivers video, brand identity and websites for brands across the Gulf and beyond. One person answers for all of it. Quote within 24 hours.">
+<meta property="og:title" content="Oberlune · Video, brand and web">
+<meta property="og:description" content="Video, brand and web, run by one person who answers for all of it. Quote within 24 hours.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#F3F5F1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#10233A" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Spectral:ital,wght@0,300;0,400;1,300;1,400&display=swap">
+<style>
+/* ---- brand/tokens.css (Lunar Sight), inlined verbatim minus the font @import ---- */
+:root {
+  --ol-bg: #F3F5F1;        /* chart paper */
+  --ol-fg: #10233A;        /* sounding ink, 14.5:1 on bg */
+  --ol-muted: #4C6C80;     /* depth line, 5.1:1 on bg */
+  --ol-accent: #B0226C;    /* chart magenta, 5.8:1 on bg */
+  --ol-font-display: "Spectral", Georgia, "Times New Roman", serif;
+  --ol-font-body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ol-bg: #10233A;      /* sounding ink */
+    --ol-fg: #F3F5F1;      /* chart paper, 14.5:1 on bg */
+    --ol-muted: #9FB6C2;   /* shoal, 7.5:1 on bg */
+    --ol-accent: #E45A9E;  /* chart magenta lifted for night, 4.7:1 on bg */
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --ol-bg: #10233A;
+  --ol-fg: #F3F5F1;
+  --ol-muted: #9FB6C2;
+  --ol-accent: #E45A9E;
+  color-scheme: dark;
+}
+
+/* ---- page-level values (shoal hairline, from the board palette) ---- */
+:root {
+  --rule: #C7D8DA;          /* shoal tint: hairlines and fills, never text */
+  --field: #FFFFFF;
+  --t-sm: 0.8rem; --t-base: 1rem; --t-md: 1.25rem; --t-lg: 1.563rem;
+  --t-xl: 1.953rem; --t-2xl: 2.441rem; --t-3xl: 3.815rem;
+  --s-1: 0.5rem; --s-2: 1rem; --s-3: 1.5rem; --s-4: 2.5rem; --s-5: 4rem; --s-6: 6.5rem;
+  --gutter: clamp(16px, 4.4vw, 64px);
+  --max: 1240px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --rule: #2B4762; --field: #0C1C2F; }
+}
+:root[data-theme="dark"] { --rule: #2B4762; --field: #0C1C2F; }
+
+/* ---- base ---- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--ol-bg); color: var(--ol-fg);
+  font-family: var(--ol-font-body); font-size: var(--t-base); line-height: 1.6;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  -webkit-tap-highlight-color: transparent;
+}
+svg { display: block; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--ol-accent); outline-offset: 3px; }
+::selection { background: var(--ol-fg); color: var(--ol-bg); }
+.wrap { width: 100%; max-width: var(--max); margin-inline: auto; padding-inline: max(var(--gutter), env(safe-area-inset-left)) max(var(--gutter), env(safe-area-inset-right)); }
+.skip {
+  position: absolute; left: var(--gutter); top: -100px; z-index: 10;
+  background: var(--ol-fg); color: var(--ol-bg); padding: 10px 16px; text-decoration: none; font-weight: 500;
+}
+.skip:focus { top: 12px; }
+h1, h2, h3 { font-family: var(--ol-font-display); font-weight: 300; text-wrap: balance; }
+h2 { font-size: clamp(var(--t-xl), 3.6vw, var(--t-2xl)); line-height: 1.12; letter-spacing: -0.012em; }
+h3 { font-size: var(--t-lg); line-height: 1.2; }
+p { text-wrap: pretty; }
+.muted { color: var(--ol-muted); }
+
+/* ---- lockup ---- */
+.lock { display: inline-flex; align-items: center; gap: 0.26em; color: inherit; text-decoration: none; font-size: var(--t-lg); }
+.lock .mk { height: 0.94em; width: 0.94em; transform: translateY(-0.04em); }
+.lock .wm { height: 1em; width: auto; aspect-ratio: 3476 / 768; }
+
+/* ---- buttons and links ---- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px; padding: 0 26px; border: 0; border-radius: 2px;
+  background: var(--ol-fg); color: var(--ol-bg);
+  font: 500 var(--t-base)/1 var(--ol-font-body); text-decoration: none; cursor: pointer;
+  transition: background-color .2s var(--ease-out), transform .2s var(--ease-out);
+  touch-action: manipulation;
+}
+.btn:hover { background: color-mix(in srgb, var(--ol-fg) 84%, var(--ol-accent)); }
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: .6; cursor: progress; }
+.tlink {
+  font-weight: 500; text-decoration: underline; text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em; text-decoration-color: var(--ol-muted);
+  transition: text-decoration-color .2s var(--ease-out);
+}
+.tlink:hover { text-decoration-color: var(--ol-accent); }
+
+/* ---- hero: the sight ---- */
+.hero { position: relative; overflow: hidden; min-height: min(92svh, 820px); display: flex; flex-direction: column; }
+.hero .deco { position: absolute; inset: 0 0 72px 0; width: 100%; height: calc(100% - 72px); pointer-events: none; }
+.hero .deco line { vector-effect: non-scaling-stroke; }
+.hero .deco .hair { stroke: var(--rule); stroke-width: 1; }
+.hero .deco .sight { stroke: var(--ol-accent); stroke-width: 1.5; }
+.horizon { position: absolute; left: 0; right: 0; bottom: 72px; height: 2px; background: var(--ol-fg); }
+.masthead { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); padding-block: 26px; }
+.masthead nav { display: flex; align-items: center; gap: 30px; font-size: var(--t-sm); font-weight: 500; }
+.masthead nav a { text-decoration: none; }
+.masthead nav a:hover { color: var(--ol-accent); }
+.masthead nav .navcta { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
+.hero-copy { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; padding-block: var(--s-5) calc(72px + var(--s-6)); }
+.hero h1 { font-size: clamp(var(--t-2xl), 5.4vw, 4.768rem); line-height: 1.04; letter-spacing: -0.015em; max-width: 12.5em; }
+.hero h1 em { font-style: italic; font-weight: 300; }
+.hero .sub { margin-top: var(--s-3); max-width: 46ch; font-size: var(--t-md); line-height: 1.5; color: var(--ol-muted); }
+.hero .actions { margin-top: var(--s-4); display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2) var(--s-3); }
+.hero .note { font-size: var(--t-sm); color: var(--ol-muted); }
+@media (prefers-reduced-motion: no-preference) {
+  .hero .sightline { clip-path: inset(100% 0 0 0); animation: sight 1.6s .35s var(--ease-out) forwards; }
+  @keyframes sight { to { clip-path: inset(0 0 0 0); } }
+}
+
+/* ---- sections ---- */
+section.band { padding-block: var(--s-6); }
+[id] { scroll-margin-top: var(--s-2); }
+#main:focus { outline: none; }
+section.band + section.band { border-top: 1px solid var(--rule); }
+.head { display: grid; gap: var(--s-2); max-width: 60ch; margin-bottom: var(--s-5); }
+.head p { color: var(--ol-muted); font-size: var(--t-md); line-height: 1.5; }
+
+/* services: video leads, brand and web stand beside it */
+.svc { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: var(--s-5); align-items: start; }
+.svc-lead h3 { font-size: clamp(var(--t-2xl), 4.6vw, var(--t-3xl)); line-height: 1; letter-spacing: -0.015em; }
+.svc-lead > p { margin-top: var(--s-3); font-size: var(--t-md); line-height: 1.5; max-width: 40ch; }
+.formats { list-style: none; padding: 0; margin-top: var(--s-4); border-top: 2px solid var(--ol-fg); }
+.formats li { display: grid; grid-template-columns: minmax(7.5em, 2fr) minmax(0, 5fr); gap: var(--s-2); padding-block: var(--s-3); border-bottom: 1px solid var(--rule); }
+.formats b { font-family: var(--ol-font-display); font-style: italic; font-weight: 400; font-size: var(--t-md); line-height: 1.3; }
+.formats span { color: var(--ol-muted); }
+.svc-lead .tlink { display: inline-block; margin-top: var(--s-3); }
+.svc-side { display: grid; gap: 0; }
+.svc-side article { padding-block: var(--s-4); border-top: 1px solid var(--rule); }
+.svc-side article:first-child { padding-top: 0; border-top: 0; }
+.svc-side p { margin-top: var(--s-2); color: var(--ol-muted); max-width: 44ch; }
+.svc-side .tlink { display: inline-block; margin-top: var(--s-2); }
+
+/* process: five fixes along one horizon */
+.steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-3); position: relative; }
+.steps::before { content: ""; position: absolute; left: 0; right: 0; top: 11px; height: 2px; background: var(--ol-fg); }
+.steps li { position: relative; padding-top: var(--s-4); }
+.steps li::before { content: ""; position: absolute; top: 4px; left: 0; width: 2px; height: 16px; background: var(--ol-fg); }
+.steps li.key::before { background: var(--ol-accent); width: 2px; height: 30px; top: -10px; }
+.steps .n { display: block; font-family: var(--ol-font-display); font-style: italic; font-weight: 300; font-size: var(--t-xl); line-height: 1; color: var(--ol-muted); font-variant-numeric: lining-nums; }
+.steps h3 { margin-top: var(--s-2); font-size: var(--t-md); line-height: 1.3; font-weight: 400; }
+.steps p { margin-top: var(--s-1); color: var(--ol-muted); font-size: var(--t-sm); line-height: 1.55; }
+
+/* brief form */
+.brief { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--s-5); align-items: start; }
+.brief .head { margin-bottom: 0; position: sticky; top: var(--s-4); }
+.brief .head .req-note { font-size: var(--t-sm); }
+form#brief { display: grid; gap: var(--s-4); }
+fieldset { border: 0; padding: 0; min-width: 0; display: grid; gap: var(--s-3); }
+legend { float: left; width: 100%; padding: 0; font-family: var(--ol-font-display); font-size: var(--t-lg); line-height: 1.2; font-weight: 300; }
+fieldset.svc-fields { padding-top: var(--s-4); border-top: 1px solid var(--rule); }
+.row2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
+.row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
+.field { display: grid; gap: 8px; align-content: start; }
+.field > label, .group-label { font-size: var(--t-sm); font-weight: 600; }
+.req { color: var(--ol-accent); margin-left: 2px; }
+.hint { font-size: var(--t-sm); color: var(--ol-muted); font-weight: 400; }
+input[type="text"], input[type="email"], input[type="number"], select, textarea {
+  width: 100%; min-height: 48px; padding: 12px 14px;
+  font: 400 var(--t-base)/1.4 var(--ol-font-body); color: var(--ol-fg);
+  background: var(--field); border: 1px solid color-mix(in srgb, var(--ol-muted) 55%, var(--ol-bg)); border-radius: 2px;
+  transition: border-color .15s var(--ease-out), box-shadow .15s var(--ease-out);
+}
+input::placeholder, textarea::placeholder { color: var(--ol-muted); opacity: 1; }
+input:hover, select:hover, textarea:hover { border-color: var(--ol-muted); }
+input:focus-visible, select:focus-visible, textarea:focus-visible { outline: none; border-color: var(--ol-fg); box-shadow: 0 0 0 1px var(--ol-fg), 0 0 0 4px color-mix(in srgb, var(--ol-accent) 30%, transparent); }
+input:user-invalid, textarea:user-invalid { border-color: var(--ol-accent); }
+textarea { min-height: 140px; resize: vertical; }
+select option { background-color: var(--field); color: var(--ol-fg); }
+select {
+  appearance: none; -webkit-appearance: none; padding-right: 42px; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ol-fg) 50%), linear-gradient(135deg, var(--ol-fg) 50%, transparent 50%);
+  background-position: calc(100% - 22px) 52%, calc(100% - 16px) 52%;
+  background-size: 6px 6px, 6px 6px; background-repeat: no-repeat;
+}
+.refs { display: grid; gap: 10px; }
+
+/* service choice: three wide targets */
+.choice { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.choice label {
+  position: relative; display: grid; gap: 4px; padding: 16px 18px; min-height: 48px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--ol-muted) 55%, var(--ol-bg)); border-radius: 2px; background: var(--field);
+  transition: background-color .2s var(--ease-out), color .2s var(--ease-out), border-color .2s var(--ease-out);
+}
+.choice label b { font-family: var(--ol-font-display); font-weight: 400; font-size: var(--t-md); line-height: 1.2; }
+.choice label small { font-size: var(--t-sm); color: var(--ol-muted); }
+.choice label:hover { border-color: var(--ol-fg); }
+.choice label:has(:checked) { background: var(--ol-fg); color: var(--ol-bg); border-color: var(--ol-fg); }
+.choice label:has(:checked) small { color: color-mix(in srgb, var(--ol-bg) 78%, var(--ol-fg)); }
+.choice label:has(:focus-visible), .chips label:has(:focus-visible) { outline: 2px solid var(--ol-accent); outline-offset: 3px; }
+.vh { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+
+/* chips for multi-select and yes/no */
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips label {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; cursor: pointer;
+  border: 1px solid color-mix(in srgb, var(--ol-muted) 55%, var(--ol-bg)); border-radius: 999px; background: var(--field);
+  font-size: var(--t-base); transition: background-color .2s var(--ease-out), color .2s var(--ease-out);
+}
+.chips label:hover { border-color: var(--ol-fg); }
+.chips label:has(:checked) { background: var(--ol-fg); color: var(--ol-bg); border-color: var(--ol-fg); }
+.group { display: grid; gap: 10px; }
+
+.submit-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2) var(--s-3); padding-top: var(--s-3); border-top: 2px solid var(--ol-fg); }
+#brief-status { font-weight: 500; min-height: 1.6em; }
+#brief-status.ok { color: var(--ol-fg); }
+#brief-status.err { color: var(--ol-accent); }
+.botcheck { display: none; }
+
+/* about */
+.about { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s-5); align-items: start; }
+.about h2 { font-size: clamp(var(--t-2xl), 4.6vw, var(--t-3xl)); line-height: 1; letter-spacing: -0.015em; }
+.about h2 em { font-style: italic; }
+.about .body { display: grid; gap: var(--s-3); font-size: var(--t-md); line-height: 1.55; max-width: 34em; }
+.about .body p + p { color: var(--ol-muted); }
+
+/* footer */
+footer { border-top: 2px solid var(--ol-fg); }
+footer .wrap { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--s-2) var(--s-4); padding-block: var(--s-4) var(--s-5); }
+footer .lock { font-size: var(--t-md); }
+footer .meta { display: flex; align-items: center; gap: var(--s-3); font-size: var(--t-sm); color: var(--ol-muted); }
+footer .meta a { color: var(--ol-fg); }
+
+/* ---- responsive ---- */
+@media (max-width: 960px) {
+  .svc, .brief, .about { grid-template-columns: minmax(0, 1fr); gap: var(--s-4); }
+  .brief .head { position: static; }
+  .steps { grid-template-columns: minmax(0, 1fr); gap: 0; padding-left: 28px; }
+  .steps::before { left: 0; right: auto; top: 6px; bottom: 6px; width: 2px; height: auto; }
+  .steps li { padding: 0 0 var(--s-3); }
+  .steps li::before { top: 9px; left: -28px; width: 16px; height: 2px; }
+  .steps li.key::before { top: 9px; left: -28px; width: 26px; height: 2px; }
+  .steps .n { display: inline; font-size: var(--t-md); margin-right: 10px; }
+  .steps h3 { display: inline; margin: 0; }
+}
+@media (max-width: 720px) {
+  section.band { padding-block: var(--s-5); }
+  .head { margin-bottom: var(--s-4); }
+  .masthead nav .navlink { display: none; }
+  .lock { font-size: var(--t-md); }
+  .hero { min-height: auto; }
+  .hero .deco { top: auto; height: 150px; }
+  .hero-copy { padding-block: var(--s-4) calc(72px + 170px); }
+  .row2, .row3, .choice { grid-template-columns: minmax(0, 1fr); }
+  .formats li { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+<symbol id="wm" viewBox="56 -754 3476 768"><path d="M308.0 10Q233.0 10 177.5 -25.0Q122.0 -60 91.0 -122.0Q60.0 -184 60.0 -265Q60.0 -347 87.5 -420.0Q115.0 -493 164.0 -549.5Q213.0 -606 278.5 -638.0Q344.0 -670 420.0 -670Q496.0 -670 551.5 -635.5Q607.0 -601 638.0 -539.0Q669.0 -477 669.0 -395Q669.0 -318 642.5 -245.5Q616.0 -173 568.0 -115.5Q520.0 -58 454.0 -24.0Q388.0 10 308.0 10ZM336.0 -24Q391.0 -24 438.5 -51.0Q486.0 -78 522.0 -127.0Q558.0 -176 578.0 -241.5Q598.0 -307 598.0 -383Q598.0 -459 572.0 -516.0Q546.0 -573 500.5 -605.5Q455.0 -638 396.0 -638Q339.0 -638 290.5 -610.5Q242.0 -583 206.5 -534.0Q171.0 -485 151.0 -420.0Q131.0 -355 131.0 -279Q131.0 -204 157.0 -146.0Q183.0 -88 229.0 -56.0Q275.0 -24 336.0 -24ZM902.0 10Q876.0 10 849.5 1.5Q823.0 -7 803.0 -21L766.0 5H759.0L882.0 -695L813.0 -715V-723L945.0 -750H951.0L879.0 -339H883.0Q927.0 -393 966.5 -426.5Q1006.0 -460 1055.0 -460Q1096.0 -460 1121.5 -424.0Q1147.0 -388 1147.0 -318Q1147.0 -256 1127.0 -197.0Q1107.0 -138 1072.5 -91.5Q1038.0 -45 994.0 -17.5Q950.0 10 902.0 10ZM1022.0 -410Q987.0 -410 947.5 -379.0Q908.0 -348 872.0 -299L832.0 -68Q856.0 -41 879.0 -31.5Q902.0 -22 927.0 -22Q971.0 -22 1007.5 -56.0Q1044.0 -90 1066.0 -152.0Q1088.0 -214 1088.0 -298Q1088.0 -410 1022.0 -410ZM1369.0 10Q1294.0 10 1258.5 -35.5Q1223.0 -81 1223.0 -155Q1223.0 -213 1243.0 -268.0Q1263.0 -323 1298.0 -366.0Q1333.0 -409 1377.0 -434.5Q1421.0 -460 1469.0 -460Q1520.0 -460 1545.5 -436.0Q1571.0 -412 1571.0 -382Q1571.0 -350 1543.0 -322.5Q1515.0 -295 1452.5 -273.5Q1390.0 -252 1284.0 -237Q1280.0 -209 1280.0 -178Q1280.0 -110 1310.5 -73.0Q1341.0 -36 1396.0 -36Q1476.0 -36 1536.0 -129H1538.0L1546.0 -123Q1520.0 -67 1473.5 -28.5Q1427.0 10 1369.0 10ZM1448.0 -432Q1391.0 -432 1348.0 -385.5Q1305.0 -339 1288.0 -262Q1409.0 -280 1460.0 -305.5Q1511.0 -331 1511.0 -378Q1511.0 -401 1495.0 -416.5Q1479.0 -432 1448.0 -432ZM1650.0 0 1722.0 -404 1651.0 -425V-433L1774.0 -460H1778.0L1770.0 -344H1774.0Q1808.0 -391 1830.5 -416.5Q1853.0 -442 1870.0 -451.0Q1887.0 -460 1903.0 -460Q1921.0 -460 1933.5 -450.0Q1946.0 -440 1946.0 -429Q1946.0 -422 1943.0 -414L1927.0 -377L1867.0 -402Q1843.0 -391 1819.0 -366.5Q1795.0 -342 1761.0 -292L1709.0 0ZM2013.0 10Q1984.0 10 1972.0 -14.5Q1960.0 -39 1969.0 -92L2076.0 -695L2002.0 -715V-723L2136.0 -750H2145.0L2032.0 -119Q2026.0 -79 2029.0 -63.5Q2032.0 -48 2047.0 -48Q2065.0 -48 2085.0 -68.0Q2105.0 -88 2123.0 -127L2137.0 -122Q2109.0 -52 2077.5 -21.0Q2046.0 10 2013.0 10ZM2301.0 10Q2262.0 10 2240.0 -16.0Q2218.0 -42 2218.0 -91Q2218.0 -101 2219.5 -113.0Q2221.0 -125 2223.0 -138L2271.0 -404L2201.0 -425V-433L2332.0 -460H2338.0L2283.0 -140Q2278.0 -116 2278.0 -102Q2278.0 -74 2291.5 -55.5Q2305.0 -37 2336.0 -37Q2372.0 -37 2407.0 -67.5Q2442.0 -98 2473.0 -132L2521.0 -404L2451.0 -425V-433L2583.0 -460H2589.0L2529.0 -119Q2522.0 -80 2525.5 -64.0Q2529.0 -48 2544.0 -48Q2563.0 -48 2583.0 -68.0Q2603.0 -88 2620.0 -127L2634.0 -122Q2606.0 -52 2574.5 -21.0Q2543.0 10 2511.0 10Q2481.0 10 2469.0 -15.0Q2457.0 -40 2466.0 -92L2467.0 -97H2463.0Q2429.0 -58 2403.5 -34.5Q2378.0 -11 2354.0 -0.5Q2330.0 10 2301.0 10ZM2683.0 0 2754.0 -404 2685.0 -425V-433L2805.0 -460H2810.0L2802.0 -352H2806.0Q2859.0 -411 2895.5 -435.5Q2932.0 -460 2977.0 -460Q3026.0 -460 3050.5 -422.0Q3075.0 -384 3062.0 -312L3027.0 -119Q3020.0 -79 3023.5 -63.5Q3027.0 -48 3042.0 -48Q3060.0 -48 3080.0 -68.0Q3100.0 -88 3118.0 -127L3131.0 -122Q3104.0 -52 3072.5 -21.0Q3041.0 10 3008.0 10Q2979.0 10 2967.0 -14.5Q2955.0 -39 2964.0 -92L3003.0 -316Q3010.0 -356 2997.0 -384.5Q2984.0 -413 2942.0 -413Q2917.0 -413 2891.5 -398.5Q2866.0 -384 2842.0 -362.0Q2818.0 -340 2797.0 -317L2742.0 0ZM3326.0 10Q3251.0 10 3215.5 -35.5Q3180.0 -81 3180.0 -155Q3180.0 -213 3200.0 -268.0Q3220.0 -323 3255.0 -366.0Q3290.0 -409 3334.0 -434.5Q3378.0 -460 3426.0 -460Q3477.0 -460 3502.5 -436.0Q3528.0 -412 3528.0 -382Q3528.0 -350 3500.0 -322.5Q3472.0 -295 3409.5 -273.5Q3347.0 -252 3241.0 -237Q3237.0 -209 3237.0 -178Q3237.0 -110 3267.5 -73.0Q3298.0 -36 3353.0 -36Q3433.0 -36 3493.0 -129H3495.0L3503.0 -123Q3477.0 -67 3430.5 -28.5Q3384.0 10 3326.0 10ZM3405.0 -432Q3348.0 -432 3305.0 -385.5Q3262.0 -339 3245.0 -262Q3366.0 -280 3417.0 -305.5Q3468.0 -331 3468.0 -378Q3468.0 -401 3452.0 -416.5Q3436.0 -432 3405.0 -432Z"/></symbol>
+<symbol id="m32" viewBox="0 0 32 32"><path d="M2 26.4H30V29H2Z"/><path d="M7 29L30 14.63L28.62 12.42L7 25.93Z"/><path d="M10.99 21.44A9.6 9.6 0 1 1 26.75 11.59Z"/></symbol>
+</defs></svg>
+
+<header class="hero" id="top">
+  <svg class="deco" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <line class="hair" x1="100" y1="0" x2="33" y2="100"/>
+    <line class="hair" x1="100" y1="0" x2="59" y2="100"/>
+    <line class="hair" x1="100" y1="0" x2="78" y2="100"/>
+    <line class="hair" x1="100" y1="0" x2="91" y2="100"/>
+  </svg>
+  <svg class="deco sightline" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <line class="sight" x1="54.5" y1="100" x2="100" y2="13"/>
+  </svg>
+  <div class="horizon" aria-hidden="true"></div>
+
+  <div class="wrap masthead">
+    <a class="lock" href="#top" aria-label="Oberlune, back to top">
+      <svg class="mk" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" focusable="false"><use href="#m32"/></svg>
+      <svg class="wm" viewBox="0 0 3476 768" fill="currentColor" aria-hidden="true" focusable="false"><use href="#wm"/></svg>
+    </a>
+    <nav aria-label="Primary">
+      <a class="navlink" href="#services">Services</a>
+      <a class="navlink" href="#process">Process</a>
+      <a class="navlink" href="#about">About</a>
+      <a class="navcta" href="#brief">Start a brief</a>
+    </nav>
+  </div>
+
+  <div class="wrap hero-copy">
+    <h1>Video, brand and web — <em>run by one person who answers for all of it.</em></h1>
+    <p class="sub"><span translate="no">Oberlune</span> plans, produces and delivers creative work for brands across the Gulf and beyond. You deal with me from brief to final file.</p>
+    <div class="actions">
+      <a class="btn" href="#brief">Start a brief</a>
+      <span class="note">Quote within 24 hours</span>
+    </div>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+  <section class="band" id="services" aria-labelledby="services-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="services-h">Three services, one person to answer to.</h2>
+      </div>
+      <div class="svc">
+        <article class="svc-lead">
+          <h3>Video</h3>
+          <p>Ads, short-form series and product videos, cut for the platform they will run on. Video leads what <span translate="no">Oberlune</span> does, and I edit in Premiere myself.</p>
+          <ul class="formats">
+            <li><b>Ads</b><span>Paid spots that stop the scroll and say one thing clearly.</span></li>
+            <li><b>Short-form</b><span>Series for Reels, TikTok and Shorts, planned as a set rather than one-offs.</span></li>
+            <li><b>Product</b><span>Your product footage or photos, cut or animated so the detail does the selling.</span></li>
+          </ul>
+          <a class="tlink" href="#brief" data-pick="Video">Start a video brief</a>
+        </article>
+        <div class="svc-side">
+          <article>
+            <h3>Brand identity</h3>
+            <p>A logo, colours and type, guidelines and social templates: one system that holds together wherever your name appears.</p>
+            <a class="tlink" href="#brief" data-pick="Brand identity">Start a brand brief</a>
+          </article>
+          <article>
+            <h3>Websites</h3>
+            <p>Clear, fast sites with the features you actually need: booking, a store, a blog, more than one language.</p>
+            <a class="tlink" href="#brief" data-pick="Website">Start a website brief</a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="process" aria-labelledby="process-h">
+    <div class="wrap">
+      <div class="head">
+        <h2 id="process-h">How a project runs</h2>
+        <p>The same five steps every time, so you always know what happens next and what you pay for.</p>
+      </div>
+      <ol class="steps">
+        <li><span class="n">1</span><h3>Brief</h3><p>Fill in the form below. No call needed to get started.</p></li>
+        <li class="key"><span class="n">2</span><h3>Quote within 24 hours</h3><p>A fixed price and a delivery date, in writing.</p></li>
+        <li><span class="n">3</span><h3>50% deposit</h3><p>Paid by PayPal. Production starts once it lands.</p></li>
+        <li><span class="n">4</span><h3>Watermarked preview</h3><p>You see the finished work and get two rounds of changes.</p></li>
+        <li><span class="n">5</span><h3>Balance &amp; final files</h3><p>Pay the remaining 50% and receive the clean, full files.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="brief-section" aria-labelledby="brief-h">
+    <div class="wrap brief">
+      <div class="head">
+        <h2 id="brief-h">Start a brief</h2>
+        <p>Tell me what you need. A fixed quote reaches you within 24 hours.</p>
+        <p class="req-note">Fields marked <span class="req" aria-hidden="true">*</span> are required. The rest help me quote accurately.</p>
+      </div>
+
+      <form id="brief" action="https://api.web3forms.com/submit" method="POST">
+        <input type="hidden" name="access_key" value="0fa66c38-e73e-424e-9d67-86cf4b312cc5">
+        <input type="hidden" name="subject" value="New Oberlune brief">
+        <input type="hidden" name="from_name" value="Oberlune site">
+        <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <fieldset>
+          <legend class="vh">About you</legend>
+          <div class="row2">
+            <div class="field">
+              <label for="f-name">Name<span class="req" aria-hidden="true">*</span></label>
+              <input id="f-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="f-email">Email<span class="req" aria-hidden="true">*</span></label>
+              <input id="f-email" name="email" type="email" autocomplete="email" spellcheck="false" required>
+            </div>
+            <div class="field">
+              <label for="f-company">Company</label>
+              <input id="f-company" name="company" type="text" autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="f-link">Website or social link</label>
+              <input id="f-link" name="link" type="text" inputmode="url" autocomplete="url" spellcheck="false" placeholder="e.g. instagram.com/yourbrand…">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="group">
+          <legend class="group-label">Service<span class="req" aria-hidden="true">*</span></legend>
+          <div class="choice">
+            <label><input class="vh" type="radio" name="service" value="Video" required><b>Video</b><small>Ads, short-form, product</small></label>
+            <label><input class="vh" type="radio" name="service" value="Brand identity"><b>Brand identity</b><small>Logo, type, guidelines</small></label>
+            <label><input class="vh" type="radio" name="service" value="Website"><b>Website</b><small>Pages, store, booking</small></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="svc-fields" data-service="Video">
+          <legend>Video details</legend>
+          <div class="row3">
+            <div class="field">
+              <label for="v-type">Type</label>
+              <select id="v-type" name="video_type">
+                <option value="">Choose…</option>
+                <option>Ad</option><option>Short-form series</option><option>Product video</option><option>Talking head</option><option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="v-length">Final length <span class="hint">(seconds)</span></label>
+              <input id="v-length" name="video_length_seconds" autocomplete="off" type="number" min="1" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="v-count">Number of videos</label>
+              <input id="v-count" name="video_count" autocomplete="off" type="number" min="1" inputmode="numeric">
+            </div>
+          </div>
+          <div class="group" role="radiogroup" aria-labelledby="v-raw-l">
+            <span class="group-label" id="v-raw-l">Raw footage ready?</span>
+            <div class="chips">
+              <label><input class="vh" type="radio" name="video_footage_ready" value="Yes">Yes</label>
+              <label><input class="vh" type="radio" name="video_footage_ready" value="No">No</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="v-ref1">Reference links <span class="hint">(up to 3)</span></label>
+            <div class="refs">
+              <input id="v-ref1" name="video_references" type="text" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. youtube.com/watch?v=…" aria-label="Reference link 1">
+              <input name="video_references" type="text" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. instagram.com/p/…" aria-label="Reference link 2">
+              <input name="video_references" type="text" autocomplete="off" inputmode="url" spellcheck="false" placeholder="e.g. tiktok.com/@brand/video/…" aria-label="Reference link 3">
+            </div>
+          </div>
+          <div class="group" role="group" aria-labelledby="v-plat-l">
+            <span class="group-label" id="v-plat-l">Platforms</span>
+            <div class="chips">
+              <label><input class="vh" type="checkbox" name="video_platforms" value="Instagram">Instagram</label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="TikTok">TikTok</label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="YouTube">YouTube</label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="LinkedIn">LinkedIn</label>
+              <label><input class="vh" type="checkbox" name="video_platforms" value="Other">Other</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="svc-fields" data-service="Brand identity">
+          <legend>Brand details</legend>
+          <div class="group" role="radiogroup" aria-labelledby="b-stage-l">
+            <span class="group-label" id="b-stage-l">Stage</span>
+            <div class="chips">
+              <label><input class="vh" type="radio" name="brand_stage" value="New brand">New brand</label>
+              <label><input class="vh" type="radio" name="brand_stage" value="Refresh">Refresh</label>
+            </div>
+          </div>
+          <div class="row2">
+            <div class="field">
+              <label for="b-industry">Industry</label>
+              <input id="b-industry" name="brand_industry" autocomplete="off" type="text">
+            </div>
+            <div class="field">
+              <label for="b-words">3 words for the brand’s personality</label>
+              <input id="b-words" name="brand_personality" autocomplete="off" type="text" placeholder="e.g. calm, exact, warm…">
+            </div>
+          </div>
+          <div class="group" role="group" aria-labelledby="b-del-l">
+            <span class="group-label" id="b-del-l">Deliverables</span>
+            <div class="chips">
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Logo">Logo</label>
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Colors & type">Colors &amp; type</label>
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Brand guidelines">Brand guidelines</label>
+              <label><input class="vh" type="checkbox" name="brand_deliverables" value="Social templates">Social templates</label>
+            </div>
+          </div>
+          <div class="field">
+            <label for="b-admire">Brands you admire <span class="hint">(links)</span></label>
+            <textarea id="b-admire" name="brand_admired" autocomplete="off" rows="3" spellcheck="false"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset class="svc-fields" data-service="Website">
+          <legend>Website details</legend>
+          <div class="row2">
+            <div class="field">
+              <label for="w-pages">Pages needed</label>
+              <input id="w-pages" name="website_pages" autocomplete="off" type="number" min="1" inputmode="numeric">
+            </div>
+            <div class="field">
+              <label for="w-existing">Existing site <span class="hint">(link)</span></label>
+              <input id="w-existing" name="website_existing" autocomplete="off" type="text" inputmode="url" spellcheck="false">
+            </div>
+          </div>
+          <div class="group" role="radiogroup" aria-labelledby="w-content-l">
+            <span class="group-label" id="w-content-l">Content ready?</span>
+            <div class="chips">
+              <label><input class="vh" type="radio" name="website_content_ready" value="Yes">Yes</label>
+              <label><input class="vh" type="radio" name="website_content_ready" value="Partly">Partly</label>
+              <label><input class="vh" type="radio" name="website_content_ready" value="No">No</label>
+            </div>
+          </div>
+          <div class="group" role="group" aria-labelledby="w-feat-l">
+            <span class="group-label" id="w-feat-l">Must-have features</span>
+            <div class="chips">
+              <label><input class="vh" type="checkbox" name="website_features" value="Booking">Booking</label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Store">Store</label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Blog">Blog</label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Multilingual">Multilingual</label>
+              <label><input class="vh" type="checkbox" name="website_features" value="Forms">Forms</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend class="vh">Timing and budget</legend>
+          <div class="row2">
+            <div class="field">
+              <label for="f-deadline">Deadline</label>
+              <input id="f-deadline" name="deadline" type="text" autocomplete="off" placeholder="e.g. mid-December, or a date">
+            </div>
+            <div class="field">
+              <label for="f-budget">Budget range</label>
+              <select id="f-budget" name="budget">
+                <option value="">Choose…</option>
+                <option>&lt;$500</option>
+                <option>$500–1,500</option>
+                <option>$1,500–5,000</option>
+                <option>$5,000+</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="f-message">Anything else</label>
+            <textarea id="f-message" name="message" autocomplete="off" rows="5"></textarea>
+          </div>
+        </fieldset>
+
+        <div class="submit-row">
+          <button class="btn" type="submit">Send brief</button>
+          <p id="brief-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <section class="band" id="about" aria-labelledby="about-h">
+    <div class="wrap about">
+      <h2 id="about-h">I’m Faisal Barom. <em>I answer for the work.</em></h2>
+      <div class="body">
+        <p>I run Oberlune. When you send a brief, I’m the one who reads it, prices it, plans the work and checks every file before it reaches you. There are no account managers to be passed between.</p>
+        <p>I edit video in Premiere myself. When a project needs a specialist, such as a type designer or a developer, I brief them, review what they make and stay your single point of contact. Either way, the result is mine to answer for.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="lock" href="#top" aria-label="Oberlune, back to top">
+      <svg class="mk" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true" focusable="false"><use href="#m32"/></svg>
+      <svg class="wm" viewBox="0 0 3476 768" fill="currentColor" aria-hidden="true" focusable="false"><use href="#wm"/></svg>
+    </a>
+    <div class="meta">
+      <span>© 2026 <span translate="no">Oberlune</span></span>
+      <a class="tlink" href="#brief">Start a brief</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const form = document.getElementById('brief');
+  const status = document.getElementById('brief-status');
+  const button = form.querySelector('button[type=submit]');
+  const groups = form.querySelectorAll('fieldset[data-service]');
+
+  // Show only the chosen service's fields; hidden fields are disabled so they are not sent.
+  const sync = () => {
+    const picked = form.querySelector('input[name=service]:checked');
+    groups.forEach(g => {
+      const on = !!picked && g.dataset.service === picked.value;
+      g.hidden = !on;
+      g.disabled = !on;
+    });
+  };
+  form.addEventListener('change', e => { if (e.target.name === 'service') sync(); });
+  sync();
+
+  // "Start a video brief" etc. preselect the service.
+  document.querySelectorAll('[data-pick]').forEach(a => a.addEventListener('click', () => {
+    const r = form.querySelector(`input[name=service][value="${a.dataset.pick}"]`);
+    if (r) { r.checked = true; sync(); }
+  }));
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.className = '';
+    status.textContent = 'Sending…';
+    button.disabled = true;
+    // Collapse multi-value fields (checkbox groups, reference links) into one line each.
+    const raw = new FormData(e.target);
+    const body = new FormData();
+    for (const key of new Set(raw.keys())) {
+      body.append(key, raw.getAll(key).filter(v => v !== '').join(', '));
+    }
+    let ok = false;
+    try {
+      // A stalled request aborts after 15s and falls through to the error message.
+      const res = await fetch(e.target.action, {
+        method: 'POST', body, headers: { Accept: 'application/json' }, signal: AbortSignal.timeout(15000) });
+      ok = !!(res.ok && (await res.json()).success);
+    } catch { ok = false; }
+    status.className = ok ? 'ok' : 'err';
+    status.textContent = ok
+      ? "Brief received — you’ll get a quote within 24 hours."
+      : "This didn’t send. Please try again in a moment.";
+    button.disabled = false;
+    if (ok) { form.reset(); sync(); }
+  });
+})();
+</script>
+</body>
+</html>
