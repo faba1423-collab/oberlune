@@ -55,6 +55,9 @@
   --gutter: clamp(16px, 4.4vw, 64px);
   --max: 1240px;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  /* micro-interactions: short, calm ease-out, no bounce */
+  --ease-ui: cubic-bezier(0.2, 0, 0, 1);
+  --d-fast: 150ms; --d-press: 160ms; --d-base: 200ms;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) { --rule: #2B4762; --field: #0C1C2F; }
@@ -98,7 +101,7 @@ a { color: inherit; }
 h1, h2, h3 { font-family: var(--ol-font-display); font-weight: 300; text-wrap: balance; }
 h2 { font-size: clamp(var(--t-xl), 3.6vw, var(--t-2xl)); line-height: 1.12; letter-spacing: -0.012em; }
 h3 { font-size: var(--t-lg); line-height: 1.2; }
-p { text-wrap: pretty; }
+p, .formats span { text-wrap: pretty; }
 .muted { color: var(--ol-muted); }
 
 /* ---- lockup ---- */
@@ -112,18 +115,38 @@ p { text-wrap: pretty; }
   min-height: 48px; padding: 0 26px; border: 0; border-radius: 2px;
   background: var(--ol-fg); color: var(--ol-bg);
   font: 500 var(--t-base)/1 var(--ol-font-body); text-decoration: none; cursor: pointer;
-  transition: background-color .2s var(--ease-out), transform .2s var(--ease-out);
+  transition: background-color var(--d-base) var(--ease-ui), transform var(--d-press) var(--ease-ui);
   touch-action: manipulation;
 }
-.btn:hover { background: color-mix(in srgb, var(--ol-fg) 84%, var(--ol-accent)); }
-.btn:active { transform: translateY(1px); }
+@media (hover: hover) {
+  .btn:not([disabled]):hover { background: color-mix(in srgb, var(--ol-fg) 84%, var(--ol-accent)); }
+}
+.btn:not([disabled]):active { transform: scale(0.98); }
 .btn[disabled] { opacity: .6; cursor: progress; }
 .tlink {
   font-weight: 500; text-decoration: underline; text-decoration-thickness: 1px;
   text-underline-offset: 0.3em; text-decoration-color: var(--ol-muted);
-  transition: text-decoration-color .2s var(--ease-out);
 }
-.tlink:hover { text-decoration-color: var(--ol-accent); }
+/* Text links and nav: on hover an accent line grows over the resting underline from the
+   start edge (left to right in English, right to left in Arabic). Only transform animates.
+   --ul-b puts it exactly on the resting underline (measured per face at 4x). */
+.tlink, .masthead nav a { position: relative; }
+.tlink::after, .masthead nav a::after {
+  content: ""; position: absolute; inset-inline: 0; bottom: var(--ul-b, 2px); height: 1px;
+  background: var(--ol-accent); pointer-events: none;
+  transform: scaleX(0); transform-origin: left center;
+  transition: transform var(--d-base) var(--ease-ui);
+}
+.masthead nav a { --ul-b: 1px; }
+/* Invisible hit area: text links reach a ~44px tap target without moving anything. */
+.tlink::before, .masthead nav a::before {
+  content: ""; position: absolute; inset-inline: -4px; inset-block: min(-4px, calc((100% - 44px) / 2));
+}
+:root[lang="ar"] :is(.tlink, .masthead nav a) { --ul-b: 3px; }
+[dir="rtl"] :is(.tlink, .masthead nav a)::after { transform-origin: right center; }
+@media (hover: hover) {
+  :is(.tlink, .masthead nav a):hover::after { transform: scaleX(1); }
+}
 
 /* ---- hero: the sight ---- */
 .hero { position: relative; overflow: hidden; min-height: min(92svh, 820px); display: flex; flex-direction: column; }
@@ -135,17 +158,23 @@ p { text-wrap: pretty; }
 .horizon { position: absolute; inset-inline: 0; bottom: 72px; height: 2px; background: var(--ol-fg); }
 .masthead { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); padding-block: 26px; }
 .masthead nav { display: flex; align-items: center; gap: 30px; font-size: var(--t-sm); font-weight: 500; }
-.masthead nav a { text-decoration: none; }
+.masthead nav a { text-decoration: none; transition: color var(--d-fast) var(--ease-ui); }
 .masthead nav a:hover { color: var(--ol-accent); }
 .masthead nav .navcta { text-decoration: underline; text-underline-offset: 0.3em; text-decoration-thickness: 1px; }
+/* Both labels share one grid cell, so the button keeps the wider label's width in either
+   language (no layout shift) and the switch is a plain 150ms cross-fade. */
 .langbtn {
-  display: inline-flex; align-items: center; min-height: 44px; padding: 0 14px; margin-inline-start: -6px;
+  display: inline-grid; place-items: center; min-height: 44px; padding: 0 14px; margin-inline-start: -6px;
   border: 1px solid var(--field-line); border-radius: 999px; background: transparent; color: inherit;
   font: 500 var(--t-sm)/1 var(--ol-font-body); cursor: pointer; touch-action: manipulation;
-  transition: border-color .2s var(--ease-out);
+  transition: border-color var(--d-base) var(--ease-ui);
 }
 .langbtn:hover { border-color: var(--ol-fg); }
+.langbtn > span { grid-area: 1 / 1; transition: opacity var(--d-fast) var(--ease-ui), visibility 0s; }
 .langbtn [lang="ar"] { font-size: 0.875rem; }
+:root[lang="ar"] .langbtn > [lang="ar"], :root:not([lang="ar"]) .langbtn > [lang="en"] {
+  opacity: 0; visibility: hidden; transition: opacity var(--d-fast) var(--ease-ui), visibility 0s var(--d-fast);
+}
 .hero-copy { position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; justify-content: center; padding-block: var(--s-5) calc(72px + var(--s-6)); }
 .hero h1 { font-size: clamp(var(--t-2xl), 5.4vw, 4.768rem); line-height: 1.04; letter-spacing: -0.015em; max-width: 12.5em; }
 .hero h1 em { font-style: italic; font-weight: 300; }
@@ -161,6 +190,9 @@ p { text-wrap: pretty; }
 section.band { padding-block: var(--s-6); }
 [id] { scroll-margin-top: var(--s-2); }
 #main:focus { outline: none; }
+/* Set by the head script only when the page will switch to Arabic; removed right after the
+   strings are applied, so English never flashes in an RTL layout. Never set without JS. */
+.i18n-pending :is(.masthead nav, .hero-copy, main, footer) { visibility: hidden; }
 section.band + section.band { border-top: 1px solid var(--rule); }
 .head { display: grid; gap: var(--s-2); max-width: 60ch; margin-bottom: var(--s-5); }
 .head p { color: var(--ol-muted); font-size: var(--t-md); line-height: 1.5; }
@@ -197,19 +229,20 @@ section.band + section.band { border-top: 1px solid var(--rule); }
 .brief .head .req-note { font-size: var(--t-sm); }
 form#brief { display: grid; gap: var(--s-4); }
 fieldset { border: 0; padding: 0; min-width: 0; display: grid; gap: var(--s-3); }
-legend { float: inline-start; width: 100%; padding: 0; font-family: var(--ol-font-display); font-size: var(--t-lg); line-height: 1.2; font-weight: 300; }
+legend { float: inline-start; width: 100%; padding: 0; font-family: var(--ol-font-display); font-size: var(--t-lg); line-height: 1.2; font-weight: 300; text-wrap: balance; }
 fieldset.svc-fields { padding-top: var(--s-4); border-top: 1px solid var(--rule); }
 .row2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-3); }
 .row3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s-3); }
 .field { display: grid; gap: 8px; align-content: start; }
 .field > label, .group-label { font-size: var(--t-sm); font-weight: 600; }
+legend.group-label { font-family: var(--ol-font-body); line-height: 1.6; } /* "Service" / «الخدمة» match the other labels */
 .req { color: var(--ol-accent); margin-inline-start: 2px; }
 .hint { font-size: var(--t-sm); color: var(--ol-muted); font-weight: 400; }
 input[type="text"], input[type="email"], input[type="number"], select, textarea {
   width: 100%; min-height: 48px; padding: 12px 14px;
   font: 400 var(--t-base)/1.4 var(--ol-font-body); color: var(--ol-fg);
   background: var(--field); border: 1px solid var(--field-line); border-radius: 2px;
-  transition: border-color .15s var(--ease-out), box-shadow .15s var(--ease-out);
+  transition: border-color var(--d-fast) var(--ease-ui);
 }
 input::placeholder, textarea::placeholder { color: var(--ol-muted); opacity: 1; }
 input:hover, select:hover, textarea:hover { border-color: var(--ol-muted); }
@@ -233,14 +266,19 @@ select {
 .choice label {
   position: relative; display: grid; gap: 4px; padding: 16px 18px; min-height: 48px; cursor: pointer;
   border: 1px solid var(--field-line); border-radius: 2px; background: var(--field);
-  transition: background-color .2s var(--ease-out), color .2s var(--ease-out), border-color .2s var(--ease-out);
+  transition: background-color 180ms var(--ease-ui), color 180ms var(--ease-ui), border-color 180ms var(--ease-ui);
 }
 .choice label b { font-family: var(--ol-font-display); font-weight: 400; font-size: var(--t-md); line-height: 1.2; }
-.choice label small { font-size: var(--t-sm); color: var(--ol-muted); }
+.choice label small { font-size: var(--t-sm); color: var(--ol-muted); transition: color 180ms var(--ease-ui); }
 .choice label:hover { border-color: var(--ol-fg); }
 .choice label:has(:checked) { background: var(--ol-fg); color: var(--ol-bg); border-color: var(--ol-fg); }
 .choice label:has(:checked) small { color: color-mix(in srgb, var(--ol-bg) 78%, var(--ol-fg)); }
 .choice label:has(:focus-visible), .chips label:has(:focus-visible) { outline: 2px solid var(--ol-accent); outline-offset: 3px; }
+/* The chosen service's fields fade in once (opacity + 6px rise, 200ms). The block's height
+   appears in one step, so nothing below slides. `.live` is set by JS after the first sync,
+   so nothing animates on load or without JS. */
+#brief.live fieldset.svc-fields:not([hidden]) { animation: reveal var(--d-base) var(--ease-ui) both; }
+@keyframes reveal { from { opacity: 0; transform: translateY(6px); } }
 .vh { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 /* chips for multi-select and yes/no */
@@ -248,11 +286,11 @@ select {
 .chips label {
   display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; cursor: pointer;
   border: 1px solid var(--field-line); border-radius: 999px; background: var(--field);
-  font-size: var(--t-base); transition: background-color .2s var(--ease-out), color .2s var(--ease-out);
+  font-size: var(--t-base); transition: background-color 180ms var(--ease-ui), color 180ms var(--ease-ui), border-color 180ms var(--ease-ui);
 }
 .chips label:hover { border-color: var(--ol-fg); }
 .chips label:has(:checked) { background: var(--ol-fg); color: var(--ol-bg); border-color: var(--ol-fg); }
-.group { display: grid; gap: 10px; }
+.group { display: grid; gap: 8px; } /* same label-to-control gap as .field */
 
 .submit-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--s-2) var(--s-3); padding-top: var(--s-3); border-top: 2px solid var(--ol-fg); }
 #brief-status { font-weight: 500; min-height: 1.6em; }
@@ -304,7 +342,7 @@ footer .meta a { color: var(--ol-fg); }
    letter-spacing is reset, and line-heights open up for Amiri's tall ascenders and descenders. */
 :root[lang="ar"] :is(h1, h2, h3, legend, .formats b, .choice b) { letter-spacing: 0; }
 :root[lang="ar"] em, :root[lang="ar"] .formats b { font-style: normal; }
-:root[lang="ar"] :is(.hero h1, .about h2) em { color: var(--ol-accent); font-weight: 400; }
+:root[lang="ar"] .hero h1 em, :root[lang="ar"] .about h2 em { color: inherit; font-weight: 700; }
 :root[lang="ar"] body { line-height: 1.75; }
 :root[lang="ar"] .hero h1 { line-height: 1.35; font-size: clamp(var(--t-2xl), 5vw, 4.4rem); }
 :root[lang="ar"] h2 { line-height: 1.4; }
@@ -314,6 +352,15 @@ footer .meta a { color: var(--ol-fg); }
 :root[lang="ar"] :is(.hero .sub, .head p, .svc-lead > p, .about .body) { line-height: 1.8; }
 :root[lang="ar"] .steps p { line-height: 1.75; }
 :root[lang="ar"] .masthead nav { font-size: 0.875rem; }
+
+/* ---- reduced motion: nothing moves or fades; state and colour changes stay, instantly ---- */
+@media (prefers-reduced-motion: reduce) {
+  .btn, .tlink::after, .masthead nav a, .masthead nav a::after, .langbtn, .langbtn > span,
+  .choice label, .choice label small, .chips label,
+  input, select, textarea { transition: none !important; }
+  .btn:not([disabled]):active { transform: none; }
+  #brief.live fieldset.svc-fields:not([hidden]) { animation: none; }
+}
 </style>
 <script>
 // Pick the language before first paint: a remembered choice, else the browser's languages.
@@ -327,6 +374,7 @@ footer .meta a { color: var(--ol-fg); }
   }
   document.documentElement.lang = lang;
   document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  if (lang === 'ar') document.documentElement.classList.add('i18n-pending');
 })();
 </script>
 </head>
@@ -360,7 +408,7 @@ footer .meta a { color: var(--ol-fg); }
       <a class="navlink" href="#process" data-i18n="nav.process">Process</a>
       <a class="navlink" href="#about" data-i18n="nav.about">About</a>
       <a class="navcta" href="#brief-section" data-i18n="cta.brief">Start a brief</a>
-      <button class="langbtn" type="button" id="lang-toggle" hidden aria-label="العربية — Switch to Arabic"><span lang="ar">العربية</span></button>
+      <button class="langbtn" type="button" id="lang-toggle" hidden aria-label="العربية — Switch to Arabic"><span lang="ar">العربية</span><span lang="en">English</span></button>
     </nav>
   </div>
 
@@ -651,14 +699,12 @@ footer .meta a { color: var(--ol-fg); }
   const B = n => `<bdi translate="no">${n}</bdi>`;
   const I18N = {
     en: {
-      'lang.name': 'English',
       'lang.switch': 'العربية — Switch to Arabic',
       'status.sending': 'Sending…',
       'status.ok': 'Brief received — you’ll get a quote within 24 hours.',
       'status.err': 'This didn’t send. Please try again in a moment.',
     },
     ar: {
-      'lang.name': 'العربية',
       'lang.switch': 'English — التبديل إلى الإنجليزية',
       'status.sending': 'جارٍ الإرسال…',
       'status.ok': 'وصلني الطلب — سيصلك عرض السعر خلال 24 ساعة.',
@@ -675,52 +721,52 @@ footer .meta a { color: var(--ol-fg); }
       'cta.brief': 'ابدأ طلبك',
 
       'hero.h1': 'فيديو وهوية ومواقع — <em>يتولّاها شخص&nbsp;واحد، ويتحمل مسؤوليتها كاملة.</em>',
-      'hero.sub': `يخطّط ${B('Oberlune')} للأعمال الإبداعية وينتجها ويسلّمها لعلامات تجارية في الخليج وخارجه. تتعامل معي مباشرة، من أول طلب حتى الملف الأخير.`,
+      'hero.sub': `يتولّى ${B('Oberlune')} تخطيط الأعمال الإبداعية وإنتاجها وتسليمها لعلامات تجارية في الخليج وخارجه. تتعامل معي مباشرة، من أول طلب حتى الملف الأخير.`,
       'hero.note': 'عرض سعر خلال 24 ساعة',
 
       'svc.h': 'ثلاث خدمات، وشخص&nbsp;واحد مسؤول أمامك.',
       'svc.video.h': 'الفيديو',
       'svc.video.p': `إعلانات وسلاسل مقاطع قصيرة وفيديوهات منتجات، يُجهَّز كلٌّ منها للمنصة التي سيُعرض عليها. ينفّذه مونتيرون محترفون، وأراجعه بنفسي.`,
       'fmt.ads.b': 'إعلانات',
-      'fmt.ads.p': 'إعلانات ممولة توقف التمرير وتقول شيئاً واحداً بوضوح.',
+      'fmt.ads.p': 'إعلانات ممولة تستوقف المتابع وتقول شيئاً واحداً بوضوح.',
       'fmt.short.b': 'مقاطع قصيرة',
       'fmt.short.p': `سلاسل لـ${B('Reels')} و ${B('TikTok')} و ${B('Shorts')}، تُخطَّط مجموعةً متكاملة لا مقاطع متفرقة.`,
       'fmt.product.b': 'منتجات',
-      'fmt.product.p': 'من لقطاتك أو صورك لمنتجك، بمونتاج أو أنيميشن يترك التفاصيل تبيع عنك.',
+      'fmt.product.p': 'من لقطاتك أو صورك لمنتجك، بمونتاج أو أنيميشن يُبرز التفاصيل فتبيع عنك.',
       'svc.video.cta': 'ابدأ طلب فيديو',
       'svc.brand.h': 'الهوية البصرية',
-      'svc.brand.p': 'شعار، وألوان وخطوط، ودليل استخدام، وقوالب لمنصات التواصل: نظام واحد متماسك أينما ظهر اسمك.',
+      'svc.brand.p': 'شعار، وألوان وخطوط، ودليل الهوية، وقوالب لمنصات التواصل: نظام واحد متماسك أينما ظهر اسمك.',
       'svc.brand.cta': 'ابدأ طلب هوية',
       'svc.web.h': 'المواقع',
       'svc.web.p': 'مواقع واضحة وسريعة، بالمزايا التي تحتاجها فعلاً: حجز، أو متجر، أو مدونة، أو أكثر من لغة.',
       'svc.web.cta': 'ابدأ طلب موقع',
 
       'proc.h': 'كيف يسير المشروع',
-      'proc.p': 'الخطوات الخمس نفسها في كل مرة، فتعرف دائماً ما الذي سيحدث بعد ذلك وما الذي تدفع مقابله.',
+      'proc.p': 'الخطوات الخمس نفسها في كل مرة، فتعرف دائماً ما الخطوة التالية وما الذي تدفع مقابله.',
       'step1.h': 'الطلب',
       'step1.p': 'املأ النموذج أدناه. لا حاجة إلى مكالمة للبدء.',
       'step2.h': 'عرض سعر خلال 24 ساعة',
-      'step2.p': 'سعر ثابت وموعد تسليم، مكتوبان.',
+      'step2.p': 'يصلك كتابةً: سعر ثابت وموعد تسليم.',
       'step3.h': 'دفعة مقدمة 50%',
       'step3.p': `تُدفع عبر ${B('PayPal')}، ويبدأ التنفيذ فور وصولها.`,
       'step4.h': 'معاينة بعلامة مائية',
       'step4.p': 'ترى العمل مكتملاً، ولك جولتان من التعديلات.',
-      'step5.h': 'المتبقي والملفات النهائية',
+      'step5.h': 'الدفعة المتبقية والملفات النهائية',
       'step5.p': 'تدفع الـ50% المتبقية وتستلم الملفات كاملة بلا علامة مائية.',
 
       'brief.p': 'أخبرني بما تحتاجه، ويصلك عرض سعر ثابت خلال 24 ساعة.',
       'brief.req': 'الحقول المعلَّمة بـ<span class="req" aria-hidden="true">*</span> مطلوبة، والباقي يساعدني على تسعير دقيق.',
-      'leg.you': 'عنك',
+      'leg.you': 'بياناتك',
       'f.name': 'الاسم',
       'f.email': 'البريد الإلكتروني',
       'f.company': 'الشركة',
-      'f.link': 'الموقع أو رابط حساب التواصل',
+      'f.link': 'رابط موقعك أو حسابك على منصات التواصل',
       'ph.link': 'instagram.com/yourbrand…',
       'f.service': 'الخدمة',
       'ch.video.b': 'فيديو',
       'ch.video.s': 'إعلانات، مقاطع قصيرة، منتجات',
       'ch.brand.b': 'هوية بصرية',
-      'ch.brand.s': 'شعار، خطوط، دليل استخدام',
+      'ch.brand.s': 'شعار، خطوط، دليل الهوية',
       'ch.web.b': 'موقع',
       'ch.web.s': 'صفحات، متجر، حجز',
       'leg.video': 'تفاصيل الفيديو',
@@ -729,8 +775,8 @@ footer .meta a { color: var(--ol-fg); }
       'opt.ad': 'إعلان',
       'opt.series': 'سلسلة مقاطع قصيرة',
       'opt.product': 'فيديو منتج',
-      'opt.talking': 'متحدث أمام الكاميرا',
-      'opt.other': 'غير ذلك',
+      'opt.talking': 'فيديو حديث أمام الكاميرا',
+      'opt.other': 'نوع آخر',
       'v.length': 'المدة النهائية',
       'v.length.h': '(بالثواني)',
       'v.count': 'عدد الفيديوهات',
@@ -747,15 +793,15 @@ footer .meta a { color: var(--ol-fg); }
       'ref2.aria': 'الرابط المرجعي 2',
       'ref3.aria': 'الرابط المرجعي 3',
       'v.plat': 'المنصات',
-      'plat.other': 'غيرها',
+      'plat.other': 'منصة أخرى',
       'leg.brand': 'تفاصيل الهوية',
       'b.stage': 'المرحلة',
-      'b.new': 'علامة جديدة',
-      'b.refresh': 'تجديد هوية قائمة',
+      'b.new': 'هوية جديدة',
+      'b.refresh': 'تجديد هوية حالية',
       'b.industry': 'المجال',
       'b.words': '3 كلمات تصف شخصية العلامة',
       'ph.words': 'مثال: هادئة، دقيقة، دافئة…',
-      'b.del': 'المطلوب تسليمه',
+      'b.del': 'المخرجات المطلوبة',
       'b.logo': 'شعار',
       'b.colors': 'ألوان وخطوط',
       'b.guide': 'دليل الهوية',
@@ -803,7 +849,6 @@ footer .meta a { color: var(--ol-fg); }
   const button = form.querySelector('button[type=submit]');
   const groups = form.querySelectorAll('fieldset[data-service]');
   const toggle = document.getElementById('lang-toggle');
-  const toggleLabel = toggle.querySelector('span');
   const cur = () => (root.lang === 'ar' ? 'ar' : 'en');
   const t = key => {
     const d = I18N[cur()];
@@ -819,9 +864,6 @@ footer .meta a { color: var(--ol-fg); }
     textEls.forEach(el => { el.innerHTML = t(el.dataset.i18n); });
     attrEls.forEach(el => attrPairs(el).forEach(([a, k]) => el.setAttribute(a, t(k))));
     document.title = t('meta.title');
-    const other = lang === 'ar' ? 'en' : 'ar';
-    toggleLabel.lang = other;
-    toggleLabel.textContent = I18N[other]['lang.name'];
     toggle.setAttribute('aria-label', t('lang.switch'));
     form.elements.language.value = lang;
     form.elements.subject.value = `New Oberlune brief (${lang.toUpperCase()})`;
@@ -833,6 +875,7 @@ footer .meta a { color: var(--ol-fg); }
     try { localStorage.setItem('oberlune-lang', next); } catch {}
   });
   apply(cur());
+  root.classList.remove('i18n-pending');
   toggle.hidden = false;
 
   const say = (msg, cls) => { status.dataset.msg = msg; status.className = cls; status.textContent = t('status.' + msg); };
@@ -848,6 +891,7 @@ footer .meta a { color: var(--ol-fg); }
   };
   form.addEventListener('change', e => { if (e.target.name === 'service') sync(); });
   sync();
+  form.classList.add('live');
 
   // "Start a video brief" etc. preselect the service.
   document.querySelectorAll('[data-pick]').forEach(a => a.addEventListener('click', () => {
@@ -886,5 +930,6 @@ footer .meta a { color: var(--ol-fg); }
   });
 })();
 </script>
+<script>document.documentElement.classList.remove('i18n-pending');</script>
 </body>
 </html>
