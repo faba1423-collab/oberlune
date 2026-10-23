@@ -185,7 +185,7 @@ p, .formats span { text-wrap: pretty; }
   background: color-mix(in srgb, var(--rule) 30%, var(--ol-bg));
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
           mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
-.strip .track { display: flex; width: max-content; animation: marquee 48s linear infinite; }
+.strip .track { display: flex; width: max-content; animation: marquee 80s linear infinite; }
 .strip ul { display: flex; gap: 56px; margin: 0; padding: 0; padding-inline-end: 56px; list-style: none; }
 .strip li { display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; font-weight: 500; }
 .strip svg, .tags svg { fill: none; stroke: var(--ol-accent); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
@@ -195,8 +195,23 @@ p, .formats span { text-wrap: pretty; }
 [dir="rtl"] .strip .track { animation-name: marquee-rtl; }
 @media (hover: hover) { .strip:hover .track { animation-play-state: paused; } }
 
+/* ---- quiet formality: square corners and hairlines everywhere, nothing rounded but the photo ---- */
+/* `body :is()` outranks the per-component radii declared further down */
+body :is(.node, .cards li, .tags li, .reels video, .langbtn, .chips label) { border-radius: 2px; }
+
+/* ---- paper: a faint fixed grain over the whole page (chart paper), never intercepts input ---- */
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  opacity: .11; mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body::after { mix-blend-mode: screen; opacity: .06; filter: invert(1); }
+}
+:root[data-theme="dark"] body::after { mix-blend-mode: screen; opacity: .06; filter: invert(1); }
+
 /* ---- sections ---- */
-section.band { padding-block: var(--s-6); }
+section.band { padding-block: clamp(var(--s-5), 9vw, 8.5rem); }
 section.band.tint { background: color-mix(in srgb, var(--rule) 30%, var(--ol-bg)); border-block: 1px solid var(--rule); }
 [id] { scroll-margin-top: var(--s-2); }
 #main:focus { outline: none; }
@@ -224,11 +239,9 @@ section.band.tint { background: color-mix(in srgb, var(--rule) 30%, var(--ol-bg)
 .node.core .mk { width: 34px; height: 34px; flex: none; }
 .node.core b { display: block; font-family: var(--ol-font-display); font-weight: 400; font-size: var(--t-lg); line-height: 1.15; }
 .node.core span { font-size: var(--t-sm); color: var(--ol-muted); }
-/* the wire between cards; a single dot travels down it, brief to files */
+/* the wire between cards, still: a hairline with a small copper fix at its foot */
 .wire { position: relative; width: 1px; height: 36px; margin-inline: auto; background: var(--field-line); }
-.wire::after { content: ""; position: absolute; left: -2.5px; top: 0; width: 6px; height: 6px; border-radius: 50%; background: var(--ol-accent); opacity: 0; animation: travel 2.8s var(--ease-ui) infinite; }
-.wire + .node + .wire::after { animation-delay: 1.4s; }
-@keyframes travel { 0% { transform: translateY(-3px); opacity: 0; } 25%, 75% { opacity: 1; } 100% { transform: translateY(33px); opacity: 0; } }
+.wire::after { content: ""; position: absolute; left: -2px; bottom: -3px; width: 5px; height: 5px; background: var(--ol-accent); transform: rotate(45deg); }
 .flow-note { display: flex; align-items: center; gap: 8px; margin-top: var(--s-2); font-size: var(--t-sm); color: var(--ol-muted); }
 .flow-note::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--ol-accent); flex: none; }
 
@@ -388,7 +401,6 @@ footer .meta a { color: var(--ol-fg); }
   .strip .track, [dir="rtl"] .strip .track { animation: none; width: auto; justify-content: center; padding-inline: var(--gutter); }
   .strip ul { flex-wrap: wrap; justify-content: center; gap: 14px 36px; padding-inline-end: 0; }
   .strip ul[aria-hidden] { display: none; }
-  .wire::after { animation: none; display: none; }
 }
 </style>
 <script>
